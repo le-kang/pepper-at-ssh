@@ -19,7 +19,6 @@ const getUserId = (request, requireAuth = true) => {
   if (auth) {
     const token = auth.replace('Bearer ', '')
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
-    console.log(decoded)
     return decoded.userId
   }
 
