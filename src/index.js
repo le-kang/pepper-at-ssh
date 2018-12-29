@@ -1,5 +1,12 @@
 import server from './server'
 
-server.start({ port: process.env.PORT || 4000 }, () => {
-  console.log('The server is up!')
-})
+const options = {
+  port: process.env.PORT || 4000,
+  endpoint: '/graphql',
+  subscriptions: '/subscriptions',
+  playground: '/playground'
+}
+
+server.start(options, ({ port }) =>
+  console.log(`Server started, listening on port ${port} for incoming requests.`)
+)
