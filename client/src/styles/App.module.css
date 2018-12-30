@@ -1,0 +1,12 @@
+.header {
+  height: 100px;
+  width: 100%;
+  background-color: #1890ff
+}
+
+.main {
+  position: relative;
+  min-height: calc(100vh - 100px);
+  width: 100%;
+  background-color: #fff
+}
