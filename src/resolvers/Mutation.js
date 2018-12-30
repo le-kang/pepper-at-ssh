@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs'
 import { hashPassword, generateToken, getUserId } from '../utils'
 
 const Mutation = {
-  async signup(_, args, { prisma }) {
+  async register(_, args, { prisma }) {
     const password = await hashPassword(args.data.password)
     const user = await prisma.createUser({
       ...args.data,
