@@ -1,8 +1,12 @@
 import { GraphQLServer } from 'graphql-yoga'
+import express from 'express'
+import session from 'cookie-session'
+import passport from 'passport'
+import path from 'path'
+
+import './passport-config'
 import resolvers from './resolvers'
 import { prisma } from '../prisma-client'
-import express from 'express'
-import path from 'path'
 
 const server = new GraphQLServer({
   typeDefs: './src/schema.graphql',
@@ -14,6 +18,13 @@ const server = new GraphQLServer({
     }
   }
 })
+
+server.express.use(session({
+  secret: 'abcd'
+}))
+
+server.express.use(passport.initialize())
+server.express.use(passport.session())
 
 if (process.env.NODE_ENV === 'production') {
   server.express.use(express.static('client/build'))

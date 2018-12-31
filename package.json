@@ -25,9 +25,11 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cookie-session": "^2.0.0-beta.3",
     "express": "^4.16.4",
     "graphql-yoga": "^1.16.9",
-    "jsonwebtoken": "^8.4.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
     "prisma-client-lib": "^1.23.2"
   }
 }

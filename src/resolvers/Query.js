@@ -1,10 +1,12 @@
 import { getUserId } from '../utils'
 
 const Query = {
-  me(_, args, { prisma, request }) {
-    const userId = getUserId(request)
-
-    return prisma.user({ id: userId })
+  me(_, args, { request }) {
+    return request.user
+  },
+  profile(_, args, { prisma, request }) {
+    const id = getUserId(request)
+    return prisma.user({ id })
   }
 }
 
