@@ -1,0 +1,42 @@
+.banner {
+  height: calc(100vh - 100px);
+  min-height: 400px;
+  width: 100%;
+  background-color: #fff;
+  font-weight: bolder;
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper {
+  width: 100%;
+  text-align: center;
+  flex: 1;
+  display: flex;
+}
+
+.button {
+  display: block;
+  width: 200px;
+  border-radius: 1.5em;
+  font-weight: bold;
+  margin: 15px auto;
+  line-height: 2;
+  height: 40px;
+}
+
+.arrow {
+  color: #1890ff;
+  padding: 10px;
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  animation: upDownMove 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes upDownMove {
+  to {
+    transform: translateY(10px);
+  }
+}

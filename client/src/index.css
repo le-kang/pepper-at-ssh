@@ -1,0 +1,24 @@
+h1, h2, h3 {
+  color: #1890ff !important;
+  font-weight: bolder !important;
+  margin: 0;
+  text-align: center;
+}
+
+h1 {
+  font-size: 4em;
+}
+
+h2 {
+  font-size: 3em;
+}
+
+h3 {
+  font-size: 2em;
+} 
+
+.container {
+  flex: 1;
+  display: flex;
+  padding: 16px;
+}

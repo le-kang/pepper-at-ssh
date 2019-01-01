@@ -1,0 +1,49 @@
+.profile {
+  margin: 8px auto;
+  padding: 16px 0;
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  border: 1px solid #e8e8e8;
+  background-color: #fff;
+}
+
+.menu {
+  width: 256px;
+}
+
+.content {
+  flex: 1;
+  padding: 0 16px;
+  display: flex;
+}
+
+.form {
+  flex: 1;
+  max-width: 450px;
+}
+
+.qrcode {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .profile {
+    flex-direction: column;
+    margin: 8px;
+  }
+
+  .menu {
+    width: 100%;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #e8e8e8;
+  }
+
+  .content {
+    flex-direction: column-reverse;
+  }
+
+  .form {
+    max-width: 100%;
+  }
+}
