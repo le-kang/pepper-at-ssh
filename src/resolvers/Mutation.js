@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs'
 import passport from 'passport'
-import { hashPassword, getUserId } from '../utils'
+import { hashPassword, getUserId, validateMobileNumber } from '../utils'
 
 const Mutation = {
   async register(_, args, { prisma, request }) {
@@ -9,6 +9,8 @@ const Mutation = {
     if (emailExists) {
       throw new Error(`"${email}" has been used`)
     }
+
+    validateMobileNumber(args.data.mobile)
 
     const password = await hashPassword(args.data.password)
 
@@ -38,6 +40,8 @@ const Mutation = {
   },
   updateProfile(_, args, { prisma, request }) {
     const id = getUserId(request)
+
+    validateMobileNumber(args.data.mobile)
 
     return prisma.updateUser({
       where: { id },
