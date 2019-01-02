@@ -3,7 +3,6 @@ import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
 import { prisma } from '../prisma-client'
 
-
 passport.serializeUser((user, done) => {
   done(null, user.id)
 })

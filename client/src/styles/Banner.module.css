@@ -15,6 +15,13 @@
   display: flex;
 }
 
+.greeting {
+  font-size: 2em;
+  margin: 16px;
+  color: #1890ff;
+  text-transform: uppercase;
+}
+
 .button {
   display: block;
   width: 200px;
@@ -23,6 +30,7 @@
   margin: 15px auto;
   line-height: 2;
   height: 40px;
+  text-transform: uppercase;
 }
 
 .arrow {

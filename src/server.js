@@ -20,7 +20,7 @@ const server = new GraphQLServer({
 })
 
 server.express.use(session({
-  secret: 'abcd'
+  secret: process.env.SESSION_SECRET
 }))
 
 server.express.use(passport.initialize())

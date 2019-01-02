@@ -5,7 +5,7 @@ import { hashPassword, getUserId, validateMobileNumber } from '../utils'
 const Mutation = {
   async register(_, args, { prisma, request }) {
     const email = args.data.email.toLowerCase()
-    const emailExists = prisma.$exists.user({ email })
+    const emailExists = await prisma.$exists.user({ email })
     if (emailExists) {
       throw new Error(`"${email}" has been used`)
     }
@@ -23,7 +23,7 @@ const Mutation = {
     return new Promise((resolve, reject) => {
       request.login({ id, name }, err => {
         if (err) { reject(err) }
-        resolve({ id, name })
+        resolve(true)
       })
     })
   },
@@ -32,8 +32,9 @@ const Mutation = {
       passport.authenticate('local', (err, user) => {
         if (err) reject(err)
         if (!user) reject('Invalid username or password')
+        console.log(user)
         request.login(user, () => {
-          resolve(user)
+          resolve(true)
         })
       })({ body: args })
     })

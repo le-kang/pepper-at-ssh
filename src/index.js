@@ -7,6 +7,13 @@ const options = {
   playground: '/playground'
 }
 
+if (process.env.NODE_ENV !== 'production') {
+  options.cors = {
+    origin: true,
+    credentials: true
+  }
+}
+
 server.start(options, ({ port }) =>
   console.log(`Server started, listening on port ${port} for incoming requests.`)
 )

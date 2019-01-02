@@ -22,3 +22,7 @@ h3 {
   display: flex;
   padding: 16px;
 }
+
+.ant-alert {
+  margin-bottom: 16px;
+}

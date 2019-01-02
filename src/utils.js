@@ -25,4 +25,15 @@ const validateMobileNumber = (number) => {
   }
 }
 
-export { hashPassword, getUserId, validateMobileNumber }
+
+/**
+ * This is a debug function that simulates a python sleep function 
+ * by using async and await keyword
+ * e.g await sleep(5) will sleep for 5 seconds
+ * @param {number} s Time for sleep
+ */
+const sleep = (s) => {
+  return new Promise(resolve => setTimeout(resolve, s * 1000))
+}
+
+export { hashPassword, getUserId, validateMobileNumber, sleep }

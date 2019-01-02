@@ -18,7 +18,8 @@ class Profile extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, values) => {
+    const { form } = this.props
+    form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
       }
@@ -162,8 +163,8 @@ class Profile extends Component {
               <div className={styles.qrcode}>
                 <Card
                   hoverable
-                  style={{ width: 200, margin: '8px auto' }}
-                  cover={<QRCode value="test" size={198} style={{ margin: '0 auto' }} />}
+                  style={{ width: 200, margin: '8px auto 24px' }}
+                  cover={<QRCode value="test" size={198} />}
                 >
                   <Card.Meta title="My QR Code" description="Pepper can use this to identify you" />
                 </Card>
