@@ -18,8 +18,13 @@ const getUserId = (request) => {
   return user.id
 }
 
+/**
+ * Check if last 8 digits of the string are all numbers in order to 
+ * be affixed after "04" to form a valid Australian mobile number 
+ * @param {string} number 
+ */
 const validateMobileNumber = (number) => {
-  const re = RegExp('^(04)[0-9]{8}$')
+  const re = RegExp('^[0-9]{8}$')
   if (number && !re.test(number)) {
     throw new Error('Invalid Australian mobile number')
   }

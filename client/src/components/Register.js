@@ -24,7 +24,7 @@ class Register extends Component {
     const { form, history } = this.props
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        register({ variables: { data: { ...values, mobile: `04${values.mobile}` } } })
+        register({ variables: { data: values } })
           .then(() => { history.push('/') })
           .catch(() => { })
       }
