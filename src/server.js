@@ -1,10 +1,12 @@
 import { GraphQLServer } from 'graphql-yoga'
 import express from 'express'
-import session from 'cookie-session'
+import session from 'express-session'
+import cookieParser from 'cookie-parser'
+import MemoryStore from 'memorystore'
+import ms from 'ms'
 import passport from 'passport'
 import path from 'path'
 
-import './passport-config'
 import resolvers from './resolvers'
 import { prisma } from '../prisma-client'
 
@@ -19,12 +21,50 @@ const server = new GraphQLServer({
   }
 })
 
+server.express.use(cookieParser())
+
+const sessionStore = new (MemoryStore(session))({ checkPeriod: ms('1d') })
+
 server.express.use(session({
-  secret: process.env.SESSION_SECRET
+  name: process.env.SESSION_NAME,
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: process.env.NODE_ENV === 'production' },
+  store: sessionStore
 }))
+
+passport.serializeUser((user, done) => {
+  done(null, user.id)
+})
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await prisma.user({ id })
+    if (!user) {
+      done(null, false)
+    } else {
+      const { name } = user
+      done(null, { id, name })
+    }
+  } catch (err) {
+    done(err)
+  }
+})
 
 server.express.use(passport.initialize())
 server.express.use(passport.session())
+
+server.express.use((req, res, next) => {
+  // Extend expiration for client-side cookie for user chooses "Remember me"
+  if (req.isAuthenticated() && req.session.cookie.originalMaxAge) {
+    res.cookie(
+      process.env.SESSION_NAME,
+      req.cookies[process.env.SESSION_NAME],
+      { maxAge: req.session.cookie.originalMaxAge }
+    )
+  }
+  next()
+})
 
 if (process.env.NODE_ENV === 'production') {
   server.express.use(express.static('client/build'))

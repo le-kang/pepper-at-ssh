@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs'
-import passport from 'passport'
+import ms from 'ms'
+
 import { hashPassword, getUserId, validateMobileNumber } from '../utils'
 
 const Mutation = {
@@ -27,18 +28,29 @@ const Mutation = {
       })
     })
   },
-  login(_, args, { request }) {
+
+  async login(_, args, { prisma, request }) {
+    const user = await prisma.user({ email: args.email.toLowerCase() })
+    if (!user) {
+      throw new Error('Invalid username or password')
+    }
+    const isMatch = await bcrypt.compare(args.password, user.password)
+    if (!isMatch) {
+      throw new Error('Invalid username or password')
+    }
+
     return new Promise((resolve, reject) => {
-      passport.authenticate('local', (err, user) => {
-        if (err) reject(err)
-        if (!user) reject('Invalid username or password')
-        console.log(user)
-        request.login(user, () => {
-          resolve(true)
-        })
-      })({ body: args })
+      const { id, name } = user
+      request.login({ id, name }, (err) => {
+        if (err) reject(false)
+        if (args.rememberMe) {
+          request.session.cookie.maxAge = ms('30 days')
+        }
+        resolve(true)
+      })
     })
   },
+
   updateProfile(_, args, { prisma, request }) {
     const id = getUserId(request)
 
@@ -47,23 +59,27 @@ const Mutation = {
     return prisma.updateUser({
       where: { id },
       data: args.data
-    })
+    }).then(() => { return true })
   },
+
   async changePassword(_, args, { prisma, request }) {
     const id = getUserId(request)
     const { password } = await prisma.user({ id })
-    const isMatch = await bcrypt.compare(args.old, password)
+    const isMatch = await bcrypt.compare(args.currentPassword, password)
     if (!isMatch) {
-      throw new Error('Invalid old password')
+      throw new Error('Provided current password is invalid')
     }
-    const newPassword = await hashPassword(args.new)
+    const newPassword = await hashPassword(args.newPassword)
     return prisma.updateUser({
       where: { id },
       data: { password: newPassword }
     }).then(() => { return true })
   },
-  logout(_, args, { request }) {
+  
+  logout(_, args, { request, response }) {
     request.logout()
+    request.session.destroy()
+    response.clearCookie(process.env.SESSION_NAME)
     return true
   }
 }

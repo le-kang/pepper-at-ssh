@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
-import { Menu, Card, Form, Input, Button } from 'antd'
+import { Redirect } from 'react-router'
+import { Menu, Card, Spin, Alert, Form, Input, Button, notification } from 'antd'
 import QRCode from 'qrcode.react'
+import { Query, Mutation } from 'react-apollo'
+
+import { GET_PROFILE } from '../queries'
+import { UPDATE_PROFILE, CHANGE_PASSWORD } from '../mutations'
 
 import styles from '../styles/Profile.module.css'
 
@@ -12,16 +17,29 @@ class Profile extends Component {
     }
   }
 
-  handleClick = (e) => {
+  handleMenuItemClick = (e) => {
     this.setState({ currentForm: e.key })
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = (e, currentForm, mutation) => {
     e.preventDefault();
     const { form } = this.props
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        const variables = currentForm === 'details' ? { data: values } : values
+        mutation({ variables })
+          .then(() => {
+            notification.success({ message: 'Operation succeeded' })
+            currentForm === 'security' && form.resetFields()
+          })
+          .catch((error) => {
+            notification.error({
+              message: 'Operation failed',
+              description: error.graphQLErrors.length ? error.graphQLErrors[0].message : '',
+              duration: 0
+            })
+            form.resetFields()
+          })
       }
     });
   }
@@ -43,7 +61,7 @@ class Profile extends Component {
     callback();
   }
 
-  renderForm(form) {
+  renderForm = (form, data, loading) => {
     const { getFieldDecorator } = this.props.form;
 
     const formItemLayout = {
@@ -59,6 +77,7 @@ class Profile extends Component {
           label="Name"
         >
           {getFieldDecorator('name', {
+            initialValue: data.name,
             rules: [{ required: true, message: 'Please input your name!' }],
           })(
             <Input />
@@ -70,6 +89,7 @@ class Profile extends Component {
           label="Mobile Number"
         >
           {getFieldDecorator('mobile', {
+            initialValue: data.mobile,
             rules: [{ pattern: /^[0-9]{8}$/, message: 'Invalid Australian mobile number' }]
           })(
             <Input addonBefore="04" />
@@ -80,12 +100,16 @@ class Profile extends Component {
           {...formItemLayout}
           label="Company/Startup Name"
         >
-          {getFieldDecorator('companyName')(
+          {getFieldDecorator('companyName', {
+            initialValue: data.companyName,
+          })(
             <Input />
           )}
         </Form.Item>,
         <Form.Item key="button">
-          <Button type="primary" htmlType="submit">Update Information</Button>
+          <Button type="primary" htmlType="submit" loading={loading}>
+            {loading ? 'Updating Information' : 'Update Information'}
+          </Button>
         </Form.Item>
       ]
     } else if (form === 'security') {
@@ -136,42 +160,81 @@ class Profile extends Component {
           )}
         </Form.Item>,
         <Form.Item key="button">
-          <Button type="primary" htmlType="submit">Change Password</Button>
+          <Button type="primary" htmlType="submit" loading={loading}>
+            {loading ? 'Changing Password' : 'Change Password'}
+          </Button>
         </Form.Item>
       ]
     }
   }
 
   render() {
+    const { history } = this.props;
     return (
       <div className="container">
-        <div className={styles.profile}>
-          <Menu
-            className={styles.menu}
-            onClick={this.handleClick}
-            defaultSelectedKeys={[this.state.currentForm]}
-            mode="inline"
-          >
-            <Menu.Item key="details">Personal Details</Menu.Item>
-            <Menu.Item key="security">Change Password</Menu.Item>
-          </Menu>
-          <div className={styles.content}>
-            <Form className={styles.form} onSubmit={this.handleSubmit}>
-              {this.renderForm(this.state.currentForm)}
-            </Form>
-            {this.state.currentForm === 'details' &&
-              <div className={styles.qrcode}>
-                <Card
-                  hoverable
-                  style={{ width: 200, margin: '8px auto 24px' }}
-                  cover={<QRCode value="test" size={198} />}
-                >
-                  <Card.Meta title="My QR Code" description="Pepper can use this to identify you" />
-                </Card>
-              </div>
+        <Query query={GET_PROFILE} fetchPolicy="network-only">
+          {({ loading, error, data }) => {
+            if (loading) {
+              return <Spin size="large" tip="Loading profile..." style={{ margin: 'auto' }} />
             }
-          </div>
-        </div>
+            if (error) {
+              if (error.graphQLErrors.length) {
+                return (
+                  <Alert
+                    className={styles.alert}
+                    type="error"
+                    message={error.graphQLErrors[0].message}
+                    showIcon
+                    closeText="Go home"
+                    onClose={() => history.push('/')}
+                  />
+                )
+              }
+              return <Redirect to="/" />
+            }
+            return (
+              <div className={styles.profile}>
+                <Menu
+                  className={styles.menu}
+                  onClick={this.handleMenuItemClick}
+                  defaultSelectedKeys={[this.state.currentForm]}
+                  mode="inline"
+                >
+                  <Menu.Item key="details">Personal Details</Menu.Item>
+                  <Menu.Item key="security" disabled={loading}>Change Password</Menu.Item>
+                </Menu>
+                <div className={styles.content}>
+                  {!data.profile.verified &&
+                    <Alert
+                      className={styles.alert}
+                      type="info"
+                      message="You need to show the QR code to Pepper at Sydney startup hub to complete registration"
+                      showIcon
+                      closable
+                    />}
+                  <Mutation mutation={this.state.currentForm === 'details' ? UPDATE_PROFILE : CHANGE_PASSWORD}>
+                    {(mutation, { loading, error }) => (
+                      <Form className={styles.form} onSubmit={(e) => this.handleSubmit(e, this.state.currentForm, mutation)}>
+                        {this.renderForm(this.state.currentForm, data.profile, loading)}
+                      </Form>
+                    )}
+                  </Mutation>
+                  {this.state.currentForm === 'details' &&
+                    <div className={styles.qrcode}>
+                      <Card
+                        hoverable
+                        style={{ width: 200, margin: '8px auto 24px' }}
+                        cover={<QRCode value={data.profile.id} size={198} />}
+                      >
+                        <Card.Meta title="My QR Code" description="Pepper can use this to identify you" />
+                      </Card>
+                    </div>
+                  }
+                </div>
+              </div>
+            )
+          }}
+        </Query>
       </div>
     )
   }

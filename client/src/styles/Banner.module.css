@@ -25,12 +25,7 @@
 .button {
   display: block;
   width: 200px;
-  border-radius: 1.5em;
-  font-weight: bold;
   margin: 15px auto;
-  line-height: 2;
-  height: 40px;
-  text-transform: uppercase;
 }
 
 .arrow {

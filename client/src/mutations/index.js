@@ -12,10 +12,22 @@ const REGISTER = gql`
   }
 `
 
+const UPDATE_PROFILE = gql`
+  mutation UpdateProfile($data: UpdateUserInput!) {
+    updateProfile(data: $data)
+  }
+`
+
+const CHANGE_PASSWORD = gql`
+  mutation ChangePassword($currentPassword: String!, $newPassword: String!) {
+    changePassword(currentPassword: $currentPassword, newPassword: $newPassword)
+  }
+`
+
 const LOGOUT = gql`
   mutation Logout {
     logout
   }
 `
 
-export { LOGIN, REGISTER, LOGOUT }
+export { LOGIN, REGISTER, UPDATE_PROFILE, CHANGE_PASSWORD, LOGOUT }

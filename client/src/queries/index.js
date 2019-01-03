@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
-const CURRENT_USER = gql`
-  {
+const GET_CURRENT_USER = gql`
+  query GetCurrentUser {
     me {
       id
       name
@@ -9,4 +9,16 @@ const CURRENT_USER = gql`
   }
 `
 
-export { CURRENT_USER }
+const GET_PROFILE = gql`
+  query GetProfile {
+    profile {
+      id
+      name
+      mobile
+      companyName
+      verified
+    }
+  }
+`
+
+export { GET_CURRENT_USER, GET_PROFILE }

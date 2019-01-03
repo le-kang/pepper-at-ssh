@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'
-import { Button, Icon, message } from 'antd'
+import { Spin, Button, Icon, message } from 'antd'
 import { Mutation } from 'react-apollo'
 
-import { CURRENT_USER } from '../queries'
 import { LOGOUT } from '../mutations'
 import styles from '../styles/Banner.module.css'
 
 class Banner extends Component {
-  renderButtons() {
+  renderButtons = () => {
     const { user, history } = this.props
     if (!user) {
       return [
@@ -32,15 +31,7 @@ class Banner extends Component {
       ]
     } else {
       return (
-        <Mutation
-          mutation={LOGOUT}
-          update={(cache) => {
-            cache.writeQuery({
-              query: CURRENT_USER,
-              data: { me: null }
-            })
-          }}
-        >
+        <Mutation mutation={LOGOUT}>
           {(logout, { loading }) => [
             <Button
               key="profile"
@@ -67,12 +58,14 @@ class Banner extends Component {
     }
   }
 
-  sayGoodbye(name) {
+  sayGoodbye = (name) => {
+    const { history } = this.props
     message.config({ top: 120 })
     message.success(`Logout successfully. See you next time, ${name}`)
+    history.push('/login')
   }
 
-  renderGreeting() {
+  renderGreeting = () => {
     const { user } = this.props;
     const hour = new Date().getHours();
     if (!user) return null;
@@ -81,15 +74,18 @@ class Banner extends Component {
   }
 
   render() {
+    const { loading } = this.props
     return (
       <div className={styles.banner}>
-        <div className={styles.wrapper}>
-          <div style={{ margin: 'auto' }}>
-            <h1>Pepper Hub</h1>
-            {this.renderGreeting()}
-            {this.renderButtons()}
-          </div>
-        </div>
+        {loading && <Spin size="large" style={{ margin: 'auto' }} />}
+        {!loading &&
+          <div className={styles.wrapper}>
+            <div style={{ margin: 'auto' }}>
+              <h1>Pepper Hub</h1>
+              {this.renderGreeting()}
+              {this.renderButtons()}
+            </div>
+          </div>}
         <div className={styles.arrow}>
           <p style={{ marginBottom: 0 }}>Learn more</p>
           <Icon type="caret-down" style={{ fontSize: '2em' }} />
