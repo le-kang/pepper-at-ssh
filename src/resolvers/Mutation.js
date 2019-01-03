@@ -1,7 +1,8 @@
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 import ms from 'ms'
 
-import { hashPassword, getUserId, validateMobileNumber } from '../utils'
+import { hashPassword, generateToken, getUserId, validateMobileNumber } from '../utils'
 
 const Mutation = {
   async register(_, args, { prisma, request }) {
@@ -81,6 +82,29 @@ const Mutation = {
     request.session.destroy()
     response.clearCookie(process.env.SESSION_NAME)
     return true
+  },
+
+  async forgotPassword(_, args, { prisma }) {
+    const user = await prisma.user({ email: args.email.toLowerCase() })
+    if (!user) {
+      throw new Error('"${email}" is not regiestered')
+    }
+    console.log(generateToken(user.id))
+    return true
+  },
+
+  async resetPassword(_, args, { prisma }) {
+    try {
+      const { userId: id } = jwt.verify(args.token, process.env.JWT_SECRET)
+      const password = await hashPassword(args.password)
+      return prisma.updateUser({
+        where: { id },
+        data: { password }
+      }).then(() => { return true })
+    } catch (err) {
+      console.log(err)
+      throw new Error('Token is invalid or expired')
+    }
   }
 }
 

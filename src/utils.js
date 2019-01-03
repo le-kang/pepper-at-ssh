@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 
 const hashPassword = (password) => {
   if (password.length < 8) {
@@ -6,6 +7,10 @@ const hashPassword = (password) => {
   }
 
   return bcrypt.hash(password, 10)
+}
+
+const generateToken = (userId) => {
+  return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '1h' })
 }
 
 const getUserId = (request) => {
@@ -41,4 +46,4 @@ const sleep = (s) => {
   return new Promise(resolve => setTimeout(resolve, s * 1000))
 }
 
-export { hashPassword, getUserId, validateMobileNumber, sleep }
+export { hashPassword, generateToken, getUserId, validateMobileNumber, sleep }
