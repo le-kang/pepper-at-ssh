@@ -1,5 +1,5 @@
 .banner {
-  height: calc(100vh - 100px);
+  height: calc(100vh - 120px);
   min-height: 400px;
   width: 100%;
   background-color: #fff;
@@ -15,21 +15,27 @@
   display: flex;
 }
 
+.title {
+  display: flex;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
 .greeting {
   font-size: 2em;
-  margin: 16px;
-  color: #1890ff;
+  margin: 24px;
+  color: #4A8BBC;
   text-transform: uppercase;
 }
 
 .button {
   display: block;
   width: 200px;
-  margin: 15px auto;
+  margin: 24px auto;
 }
 
 .arrow {
-  color: #1890ff;
+  color: #4A8BBC;
   padding: 10px;
   width: 100%;
   text-align: center;
@@ -41,5 +47,11 @@
 @keyframes upDownMove {
   to {
     transform: translateY(10px);
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    flex-direction: column;
   }
 }

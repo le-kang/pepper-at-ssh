@@ -5,10 +5,16 @@ import cookieParser from 'cookie-parser'
 import MemoryStore from 'memorystore'
 import ms from 'ms'
 import passport from 'passport'
+import Mailgun from 'mailgun-js'
 import path from 'path'
 
 import resolvers from './resolvers'
 import { prisma } from '../prisma-client'
+
+const mailgun = Mailgun({
+  apiKey: process.env.MAILGUN_API_KEY,
+  domain: process.env.MAILGUN_DOMAIN
+})
 
 const server = new GraphQLServer({
   typeDefs: './src/schema.graphql',
@@ -16,7 +22,8 @@ const server = new GraphQLServer({
   context(request) {
     return {
       ...request,
-      prisma
+      prisma,
+      mailgun
     }
   }
 })

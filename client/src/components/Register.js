@@ -5,15 +5,10 @@ import { Query, Mutation } from 'react-apollo'
 
 import { GET_CURRENT_USER } from '../queries'
 import { REGISTER } from '../mutations'
-import styles from '../styles/Register.module.css'
+import Title from './Title'
 
 class Register extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      passwordVisiable: false
-    }
-  }
+  state = { passwordVisiable: false }
 
   togglePassword = () => {
     this.setState({ passwordVisiable: !this.state.passwordVisiable })
@@ -44,7 +39,7 @@ class Register extends Component {
           })
           .catch(() => { })
       }
-    });
+    })
   }
 
   render() {
@@ -59,7 +54,7 @@ class Register extends Component {
         xs: { span: 24 },
         sm: { span: 16 },
       },
-    };
+    }
 
     return (
       <Query query={GET_CURRENT_USER} fetchPolicy="network-only">
@@ -68,13 +63,16 @@ class Register extends Component {
           else if (data.me) return <Redirect to="/" />
           else return (
             <div className="container">
-              <Card title={<Link to="/"><h3>Pepper Hub</h3></Link>} hoverable className={styles.register}>
+              <Card className="page-card" title={<Title />} hoverable>
                 <Mutation mutation={REGISTER}>
                   {(register, { loading, error }) => (
                     <Spin spinning={loading} size="large" tip="Registration in progress">
                       {!loading && error && error.graphQLErrors.map(({ message }, i) => (
                         <Alert key={i} type="error" showIcon message={message} closable />
                       ))}
+                      {!loading && error && error.networkError &&
+                        <Alert type="error" showIcon message="A network error has occurred, please try again later" closable />
+                      }
                       <Form onSubmit={(e) => this.handleRegitration(e, register)}>
                         <Form.Item
                           {...formItemLayout}

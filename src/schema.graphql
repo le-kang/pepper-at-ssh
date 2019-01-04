@@ -4,7 +4,7 @@ type Query {
 }
 
 type Mutation {
-    register(data: CreateUserInput): Boolean!
+    register(data: CreateUserInput!): Boolean!
     login(email: String!, password: String!, rememberMe: Boolean!): Boolean!
     updateProfile(data: UpdateUserInput!): Boolean!
     changePassword(currentPassword: String!, newPassword: String): Boolean!

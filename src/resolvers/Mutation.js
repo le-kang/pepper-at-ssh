@@ -2,7 +2,13 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import ms from 'ms'
 
-import { hashPassword, generateToken, getUserId, validateMobileNumber } from '../utils'
+import {
+  hashPassword,
+  generateToken,
+  getUserId,
+  validateMobileNumber,
+  generatePasswordResetEmail
+} from '../utils'
 
 const Mutation = {
   async register(_, args, { prisma, request }) {
@@ -76,7 +82,7 @@ const Mutation = {
       data: { password: newPassword }
     }).then(() => { return true })
   },
-  
+
   logout(_, args, { request, response }) {
     request.logout()
     request.session.destroy()
@@ -84,13 +90,22 @@ const Mutation = {
     return true
   },
 
-  async forgotPassword(_, args, { prisma }) {
+  async forgotPassword(_, args, { prisma, mailgun }) {
     const user = await prisma.user({ email: args.email.toLowerCase() })
     if (!user) {
-      throw new Error('"${email}" is not regiestered')
+      return true
     }
-    console.log(generateToken(user.id))
-    return true
+    return new Promise((resolve, reject) => {
+      mailgun.messages().send({
+        from: 'Pepper <no-reply@pepper-hub.com>',
+        to: user.email,
+        subject: 'Resetting your Pepper Hub password',
+        html: generatePasswordResetEmail(user.name, generateToken(user.id))
+      }, (err) => {
+        if (err) reject(err)
+        resolve(true)
+      })
+    })
   },
 
   async resetPassword(_, args, { prisma }) {
@@ -102,7 +117,6 @@ const Mutation = {
         data: { password }
       }).then(() => { return true })
     } catch (err) {
-      console.log(err)
       throw new Error('Token is invalid or expired')
     }
   }

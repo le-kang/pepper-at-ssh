@@ -30,4 +30,24 @@ const LOGOUT = gql`
   }
 `
 
-export { LOGIN, REGISTER, UPDATE_PROFILE, CHANGE_PASSWORD, LOGOUT }
+const FORGOT_PASSWORD = gql`
+  mutation ForgotPassword($email: String!) {
+    forgotPassword(email: $email)
+  }
+`
+
+const RESET_PASSWORD = gql`
+  mutation ResetPassword($token: String!, $password: String!) {
+    resetPassword(token: $token, password: $password)
+  }
+`
+
+export {
+  LOGIN,
+  REGISTER,
+  UPDATE_PROFILE,
+  CHANGE_PASSWORD,
+  LOGOUT,
+  FORGOT_PASSWORD,
+  RESET_PASSWORD
+}

@@ -46,4 +46,21 @@ const sleep = (s) => {
   return new Promise(resolve => setTimeout(resolve, s * 1000))
 }
 
-export { hashPassword, generateToken, getUserId, validateMobileNumber, sleep }
+const generatePasswordResetEmail = (name, token) => {
+  return `<p style="margin-bottom: 1em">Dear ${name}, </p>
+  <p style="margin-bottom: 1em">Someone has requested a link to reset the password for your account. 
+  If you did not request a password reset, you can ignore this email. 
+  No changes have been made to your account.</p>
+  <p style="margin-bottom: 1em">To reset your password, follow this link (or paste into your browser) within the next 60 minutes: </p>
+  <a href="${process.env.HOST_ADDRESS}/reset-password/${token}">${process.env.HOST_ADDRESS}/reset-password/${token}</a>
+  `
+}
+
+export {
+  hashPassword,
+  generateToken,
+  getUserId,
+  validateMobileNumber,
+  sleep,
+  generatePasswordResetEmail
+}

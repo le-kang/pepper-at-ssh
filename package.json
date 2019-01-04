@@ -30,6 +30,7 @@
     "express-session": "^1.15.6",
     "graphql-yoga": "^1.16.9",
     "jsonwebtoken": "^8.4.0",
+    "mailgun-js": "^0.22.0",
     "memorystore": "^1.6.0",
     "ms": "^2.1.1",
     "nodemailer": "^5.0.0",

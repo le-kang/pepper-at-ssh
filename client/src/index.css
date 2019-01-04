@@ -1,7 +1,7 @@
 /* Global CSS rules */
 
 h1, h2, h3 {
-  color: #1890ff !important;
+  color: #4A8BBC !important;
   font-weight: bolder !important;
   margin: 0;
   text-align: center;
@@ -25,8 +25,19 @@ h3 {
   padding: 16px;
 }
 
+.logo {
+  vertical-align: top;
+  margin-right: 8px;
+}
+
 .ant-alert {
   margin-bottom: 16px;
+}
+
+.page-card {
+  margin: auto;
+  width: 100%;
+  max-width: 550px;
 }
 
 button {
@@ -35,5 +46,5 @@ button {
   line-height: 2 !important;
   height: 40px !important;
   text-transform: uppercase !important;
-  margin: 8px;
+  margin: 8px 0;
 }

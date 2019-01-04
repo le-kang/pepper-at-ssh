@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router'
 import { Menu, Card, Spin, Alert, Form, Input, Button, notification } from 'antd'
 import QRCode from 'qrcode.react'
 import { Query, Mutation } from 'react-apollo'
 
 import { GET_PROFILE } from '../queries'
 import { UPDATE_PROFILE, CHANGE_PASSWORD } from '../mutations'
-
+import Title from './Title'
 import styles from '../styles/Profile.module.css'
 
 class Profile extends Component {
@@ -35,10 +34,10 @@ class Profile extends Component {
           .catch((error) => {
             notification.error({
               message: 'Operation failed',
-              description: error.graphQLErrors.length ? error.graphQLErrors[0].message : '',
+              description: error.graphQLErrors.length ? error.graphQLErrors[0].message : 'A network error has occurred, please try again later',
               duration: 0
             })
-            form.resetFields()
+            currentForm === 'details' && form.resetFields()
           })
       }
     });
@@ -67,7 +66,7 @@ class Profile extends Component {
     const formItemLayout = {
       labelCol: { span: 24 },
       wrapperCol: { span: 24 }
-    };
+    }
 
     if (form === 'details') {
       return [
@@ -178,31 +177,31 @@ class Profile extends Component {
               return <Spin size="large" tip="Loading profile..." style={{ margin: 'auto' }} />
             }
             if (error) {
-              if (error.graphQLErrors.length) {
-                return (
-                  <Alert
-                    className={styles.alert}
-                    type="error"
-                    message={error.graphQLErrors[0].message}
-                    showIcon
-                    closeText="Go home"
-                    onClose={() => history.push('/')}
-                  />
-                )
-              }
-              return <Redirect to="/" />
+              return (
+                <Alert
+                  className={styles.alert}
+                  type="error"
+                  message={error.graphQLErrors.length ? error.graphQLErrors[0].message : 'A network error has occurred, please try again later'}
+                  showIcon
+                  closeText="Go home"
+                  onClose={() => history.push('/')}
+                />
+              )
             }
             return (
               <div className={styles.profile}>
-                <Menu
-                  className={styles.menu}
-                  onClick={this.handleMenuItemClick}
-                  defaultSelectedKeys={[this.state.currentForm]}
-                  mode="inline"
-                >
-                  <Menu.Item key="details">Personal Details</Menu.Item>
-                  <Menu.Item key="security" disabled={loading}>Change Password</Menu.Item>
-                </Menu>
+                <div className={styles.nav}>
+                  <Title className={styles.title} />
+                  <Menu
+                    className={styles.menu}
+                    onClick={this.handleMenuItemClick}
+                    defaultSelectedKeys={[this.state.currentForm]}
+                    mode="inline"
+                  >
+                    <Menu.Item key="details">Personal Details</Menu.Item>
+                    <Menu.Item key="security" disabled={loading}>Change Password</Menu.Item>
+                  </Menu>
+                </div>
                 <div className={styles.content}>
                   {!data.profile.verified &&
                     <Alert

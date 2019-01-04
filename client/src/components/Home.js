@@ -5,7 +5,6 @@ import { Query } from 'react-apollo'
 import { GET_CURRENT_USER } from '../queries'
 // import styles from '../styles/Home.module.css'
 
-
 class Home extends Component {
   render() {
     return (

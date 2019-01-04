@@ -8,8 +8,20 @@
   background-color: #fff;
 }
 
+.nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  padding: 0 0 16px 8px;
+  border-right: 1px solid #e8e8e8;
+  text-align: left;
+}
+
 .menu {
   width: 256px;
+  flex: 1;
 }
 
 .content {
@@ -42,9 +54,16 @@
     margin: 8px;
   }
 
+  .title {
+    border: 0;
+    padding: 0;
+    text-align: center;
+  }
+
   .menu {
     width: 100%;
-    margin-bottom: 24px;
+    margin: 16px 0;
+    border-top: 1px solid #e8e8e8;
     border-bottom: 1px solid #e8e8e8;
   }
 

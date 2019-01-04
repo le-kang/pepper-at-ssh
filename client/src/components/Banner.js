@@ -5,6 +5,7 @@ import { Mutation } from 'react-apollo'
 
 import { LOGOUT } from '../mutations'
 import styles from '../styles/Banner.module.css'
+import pepperLogo from '../assets/images/pepper-face.png'
 
 class Banner extends Component {
   renderButtons = () => {
@@ -81,7 +82,10 @@ class Banner extends Component {
         {!loading &&
           <div className={styles.wrapper}>
             <div style={{ margin: 'auto' }}>
-              <h1>Pepper Hub</h1>
+              <div className={styles.title}>
+                <img alt="" src={pepperLogo} height="120" />
+                <h1>Pepper Hub</h1>
+              </div>
               {this.renderGreeting()}
               {this.renderButtons()}
             </div>

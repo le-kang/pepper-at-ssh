@@ -5,7 +5,7 @@ import { Query, Mutation } from 'react-apollo'
 
 import { GET_CURRENT_USER } from '../queries'
 import { LOGIN } from '../mutations'
-import styles from '../styles/Login.module.css'
+import Title from './Title'
 
 class Login extends Component {
   handleLogin = (e, login) => {
@@ -14,7 +14,7 @@ class Login extends Component {
     form.validateFields((err, values) => {
       if (!err) {
         login({ variables: values })
-          .then(() => { history.push('/') })
+          .then(() => history.push('/'))
           .catch(() => { })
       }
     });
@@ -29,27 +29,30 @@ class Login extends Component {
           else if (data.me) return <Redirect to="/" />
           else return (
             <div className="container">
-              <Card title={<Link to="/"><h3>Pepper Hub</h3></Link>} hoverable className={styles.login}>
+              <Card className="page-card" title={<Title />} hoverable style={{ maxWidth: 400 }}>
                 <Mutation mutation={LOGIN}>
                   {(login, { loading, error }) => (
                     <Spin spinning={loading} size="large" tip="Authentication in progress">
                       {!loading && error && error.graphQLErrors.map(({ message }, i) => (
                         <Alert key={i} type="error" showIcon message={message} closable />
                       ))}
-                      <Form onSubmit={e => this.handleLogin(e, login)}>
+                      {!loading && error && error.networkError &&
+                        <Alert type="error" showIcon message="A network error has occurred, please try again later" closable />
+                      }
+                      <Form onSubmit={(e) => this.handleLogin(e, login)}>
                         <Form.Item>
                           {getFieldDecorator('email', {
-                            rules: [{ required: true, message: 'Please input your email!' }],
+                            rules: [{ required: true, message: 'Please input your email!' }]
                           })(
                             <Input
-                              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                              prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
                               placeholder="Email"
                             />
                           )}
                         </Form.Item>
                         <Form.Item>
                           {getFieldDecorator('password', {
-                            rules: [{ required: true, message: 'Please input your password!' }],
+                            rules: [{ required: true, message: 'Please input your password!' }]
                           })(
                             <Input
                               prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -65,10 +68,10 @@ class Login extends Component {
                           })(
                             <Checkbox>Remember me</Checkbox>
                           )}
-                          {/* <Link to='/forgot-password'>Forgot password</Link> */}
+                          <Link to='/forgot-password' style={{ float: 'right' }}>Forgot password</Link>
                           <Button type="primary" htmlType="submit" style={{ width: '100%' }} disabled={loading}>
                             Log in
-                    </Button>
+                          </Button>
                           Or <Link to='/register' disabled={loading}>register now!</Link>
                         </Form.Item>
                       </Form>
