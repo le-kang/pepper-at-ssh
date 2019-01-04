@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Card, Spin, Alert, Form, Input, Button, notification } from 'antd';
 import { Mutation } from 'react-apollo'
+import { Animated } from 'react-animated-css'
 
 import { RESET_PASSWORD } from '../mutations'
 import Title from './Title'
@@ -59,7 +60,7 @@ class ResetPassword extends Component {
     }
 
     return (
-      <div className="container">
+      <Animated className="container" animationIn="zoomInUp">
         <Card className="page-card" title={<Title />} hoverable>
           <Mutation mutation={RESET_PASSWORD}>
             {(resetPassword, { loading, error }) => (
@@ -116,7 +117,7 @@ class ResetPassword extends Component {
             )}
           </Mutation>
         </Card>
-      </div>
+      </Animated>
     )
   }
 }

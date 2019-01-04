@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { Card, Spin, Alert, Icon, Form, Input, Button, Modal } from 'antd';
 import { Query, Mutation } from 'react-apollo'
+import { Animated } from 'react-animated-css'
 
 import { GET_CURRENT_USER } from '../queries'
 import { REGISTER } from '../mutations'
@@ -62,7 +63,7 @@ class Register extends Component {
           if (loading) return <Spin size="large" style={{ margin: 'auto' }} />
           else if (data.me) return <Redirect to="/" />
           else return (
-            <div className="container">
+            <Animated className="container" animationIn="zoomInUp">
               <Card className="page-card" title={<Title />} hoverable>
                 <Mutation mutation={REGISTER}>
                   {(register, { loading, error }) => (
@@ -151,8 +152,7 @@ class Register extends Component {
                   )}
                 </Mutation>
               </Card>
-            </div>
-
+            </Animated>
           )
         }}
       </Query>

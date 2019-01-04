@@ -8,6 +8,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import * as serviceWorker from './serviceWorker'
 
 import App from './components/App'
+import 'animate.css/animate.min.css'
 import './index.css'
 
 const httpLink = createHttpLink({

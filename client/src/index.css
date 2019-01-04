@@ -25,6 +25,10 @@ h3 {
   padding: 16px;
 }
 
+img {
+  max-width: 100%;
+}
+
 .logo {
   vertical-align: top;
   margin-right: 8px;
@@ -47,4 +51,10 @@ button {
   height: 40px !important;
   text-transform: uppercase !important;
   margin: 8px 0;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 3.5em;
+  }
 }

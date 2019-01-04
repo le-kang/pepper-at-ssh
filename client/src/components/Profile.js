@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Menu, Card, Spin, Alert, Form, Input, Button, notification } from 'antd'
 import QRCode from 'qrcode.react'
 import { Query, Mutation } from 'react-apollo'
+import { Animated } from 'react-animated-css'
 
 import { GET_PROFILE } from '../queries'
 import { UPDATE_PROFILE, CHANGE_PASSWORD } from '../mutations'
@@ -170,7 +171,7 @@ class Profile extends Component {
   render() {
     const { history } = this.props;
     return (
-      <div className="container">
+      <Animated className="container" animationIn="zoomInUp">
         <Query query={GET_PROFILE} fetchPolicy="network-only">
           {({ loading, error, data }) => {
             if (loading) {
@@ -234,7 +235,7 @@ class Profile extends Component {
             )
           }}
         </Query>
-      </div>
+      </Animated>
     )
   }
 }

@@ -20,7 +20,7 @@ const navigations = {
 }
 
 class App extends Component {
-  renderBreadcrumb() {
+  renderBreadcrumb = () => {
     const { location: { pathname } } = this.props
     if (!navigations[pathname]) return null // No need for breadcrumb on home page
     const items = [
@@ -68,7 +68,9 @@ class App extends Component {
           </Switch>
         </main>,
         <footer key="footer" className={styles.footer}>
-          <Icon type="copyright" /> 2019 The Magic Lab
+          <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+            <Icon type="copyright" /> 2019 The Magic Lab
+          </div>
         </footer>
       ]
     );

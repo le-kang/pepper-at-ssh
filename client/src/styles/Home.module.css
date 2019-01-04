@@ -1,0 +1,46 @@
+.section {
+  background-color: #fff;
+
+}
+
+.header {
+  color: #fff;
+  padding: 8px;
+  text-align: center;
+  font-size: 2em;
+  font-weight: bold;
+  background-color: #4A8BBC;
+}
+
+.wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 0;
+  display: flex;
+  align-items: center;
+}
+
+.image {
+  text-align: center;
+  flex: 4;
+  padding: 24px;
+}
+
+.description {
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: 500;
+  color: #4A8BBC;
+  margin: 24px;
+  flex: 7;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    flex-direction: column !important;
+  }
+
+  .image {
+    width: 100%;
+  }
+}

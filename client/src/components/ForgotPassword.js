@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Spin, Alert, Card, Form, Icon, Input, Button, notification } from 'antd';
 import { Mutation } from 'react-apollo'
+import { Animated } from 'react-animated-css'
 
 import { FORGOT_PASSWORD } from '../mutations'
 import Title from './Title'
@@ -27,7 +28,7 @@ class ForgotPassword extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <div className="container">
+      <Animated className="container" animationIn="zoomInUp">
         <Card className="page-card" title={<Title />} hoverable style={{ maxWidth: 400 }}>
           <Mutation mutation={FORGOT_PASSWORD}>
             {(forgotPassword, { loading, error }) => (
@@ -60,7 +61,7 @@ class ForgotPassword extends Component {
             )}
           </Mutation>
         </Card>
-      </div>
+      </Animated>
     )
   }
 }

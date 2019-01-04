@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'
-import { Spin, Button, Icon, message } from 'antd'
+import { Spin, Button, Icon, notification } from 'antd'
 import { Mutation } from 'react-apollo'
+import { Animated } from 'react-animated-css'
 
 import { LOGOUT } from '../mutations'
 import styles from '../styles/Banner.module.css'
@@ -61,34 +62,32 @@ class Banner extends Component {
 
   sayGoodbye = (name) => {
     const { history } = this.props
-    message.config({ top: 120 })
-    message.success(`Logout successfully. See you next time, ${name}`)
+    notification.success({ message: `Logout successfully. See you next time, ${name}` })
     history.push('/login')
   }
 
   renderGreeting = () => {
     const { user } = this.props;
     const hour = new Date().getHours();
-    if (!user) return null;
     const period = hour < 12 ? 'morning' : hour < 18 ? 'afternoon' : 'evening'
     return <p className={styles.greeting}>{`Good ${period}, ${user.name}`}</p>
   }
 
   render() {
-    const { loading } = this.props
+    const { user, loading } = this.props
     return (
       <div className={styles.banner}>
         {loading && <Spin size="large" style={{ margin: 'auto' }} />}
         {!loading &&
           <div className={styles.wrapper}>
-            <div style={{ margin: 'auto' }}>
+            <Animated animationIn="fadeInUp" style={{ margin: 'auto' }}>
               <div className={styles.title}>
                 <img alt="" src={pepperLogo} height="120" />
                 <h1>Pepper Hub</h1>
               </div>
-              {this.renderGreeting()}
+              {user && this.renderGreeting()}
               {this.renderButtons()}
-            </div>
+            </Animated>
           </div>}
         <div className={styles.arrow}>
           <p style={{ marginBottom: 0 }}>Learn more</p>
