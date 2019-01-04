@@ -14,7 +14,11 @@ const REGISTER = gql`
 
 const UPDATE_PROFILE = gql`
   mutation UpdateProfile($data: UpdateUserInput!) {
-    updateProfile(data: $data)
+    updateProfile(data: $data) {
+      name
+      mobile
+      companyName
+    }
   }
 `
 

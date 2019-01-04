@@ -66,7 +66,7 @@ const Mutation = {
     return prisma.updateUser({
       where: { id },
       data: args.data
-    }).then(() => { return true })
+    })
   },
 
   async changePassword(_, args, { prisma, request }) {

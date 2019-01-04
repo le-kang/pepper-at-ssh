@@ -213,9 +213,9 @@ class Profile extends Component {
                       closable
                     />}
                   <Mutation mutation={this.state.currentForm === 'details' ? UPDATE_PROFILE : CHANGE_PASSWORD}>
-                    {(mutation, { loading, error }) => (
+                    {(mutation, { loading, data: _data = data }) => (
                       <Form className={styles.form} onSubmit={(e) => this.handleSubmit(e, this.state.currentForm, mutation)}>
-                        {this.renderForm(this.state.currentForm, data.profile, loading)}
+                        {this.renderForm(this.state.currentForm, _data.profile || _data.updateProfile, loading)}
                       </Form>
                     )}
                   </Mutation>
