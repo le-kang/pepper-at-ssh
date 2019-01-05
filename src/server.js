@@ -32,6 +32,7 @@ server.express.use(cookieParser())
 
 const sessionStore = new (MemoryStore(session))({ checkPeriod: ms('1d') })
 
+server.express.set('trust proxy', 1)
 server.express.use(session({
   name: process.env.SESSION_NAME,
   secret: process.env.SESSION_SECRET,
