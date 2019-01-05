@@ -5,13 +5,15 @@
   "main": "src/index.js",
   "scripts": {
     "prod": "env-cmd ./config/prod.env node dist/index.js",
-    "local-prisma-deploy": "cd prisma-server && env-cmd ../config/dev.env prisma deploy",
+    "local-prisma-deploy": "cd prisma-server && prisma deploy -e ../config/dev.env",
     "dev": "concurrently \"npm:dev-server\" \"npm:dev-client\"",
     "dev-server": "env-cmd ./config/dev.env nodemon src/index.js --ext js,graphql --ignore client/ --exec babel-node",
     "dev-client": "cd client && npm start",
     "build-server": "babel src --out-dir dist --copy-files",
     "build-client": "cd client && npm run build",
-    "build": "npm run build-client && npm run build-server"
+    "build": "npm run build-client && npm run build-server",
+    "heroku-postbuild": "npm run build",
+    "start": "node dist/index.js"
   },
   "author": "Le Kang",
   "license": "ISC",
