@@ -136,7 +136,7 @@ class Profile extends Component {
             rules: [{
               required: true, message: 'Please input a new password!',
             }, {
-              min: 8, message: 'Minium 8 characters'
+              min: 8, message: 'Minimum 8 characters'
             }, {
               validator: this.checkPassword
             }],

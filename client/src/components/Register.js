@@ -97,7 +97,7 @@ class Register extends Component {
                             rules: [{
                               required: true, message: 'Please input your password!',
                             }, {
-                              min: 8, message: 'Minium 8 characters'
+                              min: 8, message: 'Minimum 8 characters'
                             }],
                           })(
                             <Input
