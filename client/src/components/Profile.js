@@ -207,7 +207,7 @@ class Profile extends Component {
                   {!data.profile.verified &&
                     <Alert
                       className={styles.alert}
-                      type="info"
+                      type="warning"
                       message="You need to show the QR code to Pepper at Sydney startup hub to complete registration"
                       showIcon
                       closable
