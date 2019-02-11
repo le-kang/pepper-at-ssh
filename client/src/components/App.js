@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Route, Switch, Link, Redirect, withRouter } from 'react-router-dom'
-import { Icon, Breadcrumb, Divider } from 'antd';
+import { Icon, Breadcrumb, Divider } from 'antd'
+import { animateScroll as scroller } from 'react-scroll'
 
 import Home from './Home'
 import Login from './Login'
@@ -68,8 +69,13 @@ class App extends Component {
           </Switch>
         </main>,
         <footer key="footer" className={styles.footer}>
-          <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-            <Icon type="copyright" /> 2019 The Magic Lab
+          <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', justifyContent: 'space-between' }}>
+            <div>
+              <Icon type="copyright" style={{ fontSize: 17 }} /> 2019 The Magic Lab
+            </div>
+            <div style={{ cursor: 'pointer' }} onClick={() => scroller.scrollToTop({ duration: 1000 })}>
+              Back to Top <Icon type="up-square" style={{ fontSize: 17 }} />
+            </div>
           </div>
         </footer>
       ]

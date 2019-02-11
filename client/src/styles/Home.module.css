@@ -1,6 +1,5 @@
 .section {
   background-color: #fff;
-
 }
 
 .header {
@@ -13,7 +12,7 @@
 }
 
 .wrapper {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 24px 0;
   display: flex;
@@ -27,12 +26,13 @@
 }
 
 .description {
-  text-align: center;
   font-size: 1.2em;
   font-weight: 500;
   color: #4A8BBC;
   margin: 24px;
   flex: 7;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 @media (max-width: 768px) {

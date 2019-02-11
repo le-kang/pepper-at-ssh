@@ -13,8 +13,9 @@
     "build-server": "babel src --out-dir dist --copy-files",
     "build-client": "cd client && yarn run build",
     "build": "yarn run build-client && yarn run build-server",
-    "heroku-postbuild": "yarn build",
-    "start": "node dist/index.js"
+    "gcp-build": "yarn build",
+    "start": "node dist/index.js",
+    "deploy": "gcloud app deploy"
   },
   "author": "Le Kang",
   "license": "ISC",

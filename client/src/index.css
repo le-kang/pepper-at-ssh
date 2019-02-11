@@ -19,6 +19,12 @@ h3 {
   font-size: 2em;
 } 
 
+br {
+  display: block;
+  margin-top: 16px;
+  content: " "
+}
+
 .container {
   flex: 1;
   display: flex;

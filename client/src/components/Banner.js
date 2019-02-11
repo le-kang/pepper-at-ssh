@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router'
 import { Spin, Button, Icon, notification } from 'antd'
 import { Mutation } from 'react-apollo'
+import { scroller } from 'react-scroll'
 import { Animated } from 'react-animated-css'
 
 import { LOGOUT } from '../mutations'
@@ -89,9 +90,15 @@ class Banner extends Component {
               {this.renderButtons()}
             </Animated>
           </div>}
-        <div className={styles.arrow}>
-          <p style={{ marginBottom: 0 }}>Learn more</p>
-          <Icon type="caret-down" style={{ fontSize: '2em' }} />
+        <div className={styles.scroller}>
+          <span
+            style={{ cursor: 'pointer' }}
+            onClick={() => scroller.scrollTo('main', { duration: 1000, smooth: "easeInOutQuint" })}
+          >
+            Learn more
+            <br />
+            <Icon type="caret-down" style={{ fontSize: '2em' }} />
+          </span>
         </div>
       </div>
     )

@@ -228,3 +228,4 @@ config/
 dist/
 build/
 prisma-server/docker-compose.yml
+app.yaml
