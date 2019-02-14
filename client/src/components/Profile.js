@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { Menu, Card, Spin, Alert, Form, Input, Button, notification } from 'antd'
+import { Redirect, withRouter } from 'react-router-dom'
+import { Menu, Card, Spin, Alert, Form, Input, Button, Icon, Modal, notification } from 'antd'
 import QRCode from 'qrcode.react'
 import { Query, Mutation } from 'react-apollo'
 import { Animated } from 'react-animated-css'
 
-import { GET_PROFILE } from '../queries'
-import { UPDATE_PROFILE, CHANGE_PASSWORD } from '../mutations'
+import { GET_USER } from '../queries'
+import { UPDATE_PROFILE, SEND_QR_CODE, CHANGE_PASSWORD, DEACTIVATE_ACCOUNT } from '../mutations'
 import Title from './Title'
 import styles from '../styles/Profile.module.css'
 
@@ -17,8 +18,39 @@ class Profile extends Component {
     }
   }
 
-  handleMenuItemClick = (e) => {
-    this.setState({ currentForm: e.key })
+  handleMenuItemClick = (key, deactivateAccount) => {
+    if (key === 'deactivate') {
+      const { history } = this.props
+      Modal.confirm({
+        title: 'Are your sure to deactivate this account?',
+        content: 'You will not be able to access your account after deactivation. You will need to contact us to reactivate your account.',
+        okText: 'Yes',
+        okType: 'danger',
+        cancelText: 'No',
+        onOk() {
+          deactivateAccount().then(() => {
+            notification.success({ message: 'Your account has been deactivated successfully.' })
+            history.push('/')
+          })
+        }
+      })
+      return
+    }
+    this.setState({ currentForm: key })
+  }
+
+  sendQRCode = (to, remoteCall) => {
+    remoteCall({ variables: { to } })
+      .then(() => {
+        notification.success({ message: 'Your QR code has been sent to your ' + to })
+      })
+      .catch((error) => {
+        notification.error({
+          message: 'Request failed',
+          description: error.graphQLErrors.length ? error.graphQLErrors[0].message : 'A network error has occurred, please try again later',
+          duration: 0
+        })
+      })
   }
 
   handleSubmit = (e, currentForm, mutation) => {
@@ -34,7 +66,7 @@ class Profile extends Component {
           })
           .catch((error) => {
             notification.error({
-              message: 'Operation failed',
+              message: 'Update request failed',
               description: error.graphQLErrors.length ? error.graphQLErrors[0].message : 'A network error has occurred, please try again later',
               duration: 0
             })
@@ -61,7 +93,7 @@ class Profile extends Component {
     callback();
   }
 
-  renderForm = (form, data, loading) => {
+  renderForm = (form, user, loading) => {
     const { getFieldDecorator } = this.props.form;
 
     const formItemLayout = {
@@ -77,7 +109,7 @@ class Profile extends Component {
           label="Name"
         >
           {getFieldDecorator('name', {
-            initialValue: data.name,
+            initialValue: user.name,
             rules: [{ required: true, message: 'Please input your name!' }],
           })(
             <Input />
@@ -89,7 +121,7 @@ class Profile extends Component {
           label="Mobile Number"
         >
           {getFieldDecorator('mobile', {
-            initialValue: data.mobile,
+            initialValue: user.mobile,
             rules: [{ pattern: /^[0-9]{8}$/, message: 'Invalid Australian mobile number' }]
           })(
             <Input addonBefore="04" />
@@ -101,11 +133,21 @@ class Profile extends Component {
           label="Company/Startup Name"
         >
           {getFieldDecorator('companyName', {
-            initialValue: data.companyName,
+            initialValue: user.companyName,
           })(
             <Input />
           )}
         </Form.Item>,
+        user.loginWith ?
+          <Form.Item
+            key="loginWith"
+            {...formItemLayout}
+            label="How Pepper Will Recognise you"
+          >
+            <span style={{ textTransform: 'uppercase', padding: 8, border: '1px solid #e8e8e8' }}>
+              {user.loginWith}
+            </span>
+          </Form.Item> : '',
         <Form.Item key="button">
           <Button type="primary" htmlType="submit" loading={loading}>
             {loading ? 'Updating Information' : 'Update Information'}
@@ -172,11 +214,10 @@ class Profile extends Component {
     const { history } = this.props;
     return (
       <Animated className="container" animationIn="zoomInUp">
-        <Query query={GET_PROFILE} fetchPolicy="network-only">
+        <Query query={GET_USER} fetchPolicy="network-only">
           {({ loading, error, data }) => {
-            if (loading) {
-              return <Spin size="large" tip="Loading profile..." style={{ margin: 'auto' }} />
-            }
+            if (loading) return <Spin size="large" tip="Loading profile..." style={{ margin: 'auto' }} />
+            if (!data.user) return <Redirect to="/" />
             if (error) {
               return (
                 <Alert
@@ -193,41 +234,84 @@ class Profile extends Component {
               <div className={styles.profile}>
                 <div className={styles.nav}>
                   <Title className={styles.title} />
-                  <Menu
-                    className={styles.menu}
-                    onClick={this.handleMenuItemClick}
-                    defaultSelectedKeys={[this.state.currentForm]}
-                    mode="inline"
+                  <Mutation
+                    mutation={DEACTIVATE_ACCOUNT}
+                    update={(cache) => {
+                      cache.writeQuery({
+                        query: GET_USER,
+                        data: { user: null }
+                      })
+                    }}
                   >
-                    <Menu.Item key="details">Personal Details</Menu.Item>
-                    <Menu.Item key="security" disabled={loading}>Change Password</Menu.Item>
-                  </Menu>
+                    {(deactivateAccount, { loading }) => (
+                      <Menu
+                        className={styles.menu}
+                        onClick={({ key }) => this.handleMenuItemClick(key, deactivateAccount)}
+                        selectedKeys={[this.state.currentForm]}
+                        mode="inline"
+                      >
+                        <Menu.Item key="details">Personal Details</Menu.Item>
+                        <Menu.Item key="security" disabled={loading}>Change Password</Menu.Item>
+                        <Menu.Item key="deactivate" disabled={loading}>Deactivate my account</Menu.Item>
+                      </Menu>
+                    )}
+                  </Mutation>
                 </div>
                 <div className={styles.content}>
-                  {!data.profile.verified &&
+                  {!data.user.verified &&
                     <Alert
                       className={styles.alert}
-                      type="warning"
-                      message="You need to show the QR code to Pepper at Sydney startup hub to complete registration"
+                      type="error"
+                      message="You need to show the QR code to Pepper at Sydney Startup Hub to complete registration"
                       showIcon
+                      icon={<Icon type="exclamation-circle" />}
                       closable
                     />}
-                  <Mutation mutation={this.state.currentForm === 'details' ? UPDATE_PROFILE : CHANGE_PASSWORD}>
-                    {(mutation, { loading, data: _data = data }) => (
+                  <Mutation
+                    mutation={this.state.currentForm === 'details' ? UPDATE_PROFILE : CHANGE_PASSWORD}
+                    update={(cache, { data }) => {
+                      data.updateProfile && cache.writeQuery({
+                        query: GET_USER,
+                        data: { user: data.updateProfile }
+                      })
+                    }}
+                  >
+                    {(mutation, { loading }) => (
                       <Form className={styles.form} onSubmit={(e) => this.handleSubmit(e, this.state.currentForm, mutation)}>
-                        {this.renderForm(this.state.currentForm, _data.profile || _data.updateProfile, loading)}
+                        {this.renderForm(this.state.currentForm, data.user, loading)}
                       </Form>
                     )}
                   </Mutation>
                   {this.state.currentForm === 'details' &&
                     <div className={styles.qrcode}>
-                      <Card
-                        hoverable
-                        style={{ width: 200, margin: '8px auto 24px' }}
-                        cover={<QRCode value={data.profile.id} size={198} />}
-                      >
-                        <Card.Meta title="My QR Code" description="Pepper can use this to identify you" />
-                      </Card>
+                      <Mutation mutation={SEND_QR_CODE}>
+                        {(sendQRCode) => (
+                          <Card
+                            style={{ width: 200, margin: '0 auto 24px' }}
+                            bodyStyle={{ padding: 16 }}
+                            cover={<QRCode value={data.user.id} size={198} />}
+                            actions={[
+                              <span
+                                onClick={() => this.sendQRCode('mobile', sendQRCode)}
+                                style={{ display: 'inline-block', lineHeight: '22px' }}
+                              >
+                                <Icon type="mobile" /> Mobile
+                              </span>,
+                              <span
+                                onClick={() => this.sendQRCode('email', sendQRCode)}
+                                style={{ display: 'inline-block', lineHeight: '22px' }}
+                              >
+                                <Icon type="mail" /> Email
+                              </span>
+                            ]}
+                          >
+                            <Card.Meta
+                              title="My QR code"
+                              description="Send this QR code to:"
+                            />
+                          </Card>
+                        )}
+                      </Mutation>
                     </div>
                   }
                 </div>
@@ -240,4 +324,4 @@ class Profile extends Component {
   }
 }
 
-export default Form.create()(Profile)
+export default Form.create()(withRouter(Profile))

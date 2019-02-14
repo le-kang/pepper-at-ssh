@@ -110,7 +110,7 @@ class ResetPassword extends Component {
                   <Form.Item key="button" style={{ textAlign: 'right' }}>
                     <Button type="primary" htmlType="submit" disabled={loading}>
                       Reset Password
-                  </Button>
+                    </Button>
                   </Form.Item>
                 </Form>
               </Spin>

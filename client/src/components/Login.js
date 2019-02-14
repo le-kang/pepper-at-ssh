@@ -4,7 +4,7 @@ import { Spin, Alert, Card, Form, Icon, Input, Button, Checkbox } from 'antd';
 import { Query, Mutation } from 'react-apollo'
 import { Animated } from 'react-animated-css'
 
-import { GET_CURRENT_USER } from '../queries'
+import { GET_USER } from '../queries'
 import { LOGIN } from '../mutations'
 import Title from './Title'
 
@@ -24,14 +24,22 @@ class Login extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Query query={GET_CURRENT_USER} fetchPolicy="network-only">
+      <Query query={GET_USER}>
         {({ loading, data = {} }) => {
           if (loading) return <Spin size="large" style={{ margin: 'auto' }} />
-          else if (data.me) return <Redirect to="/" />
+          else if (data.user) return <Redirect to="/" />
           else return (
             <Animated className="container" animationIn="zoomInUp">
               <Card className="page-card" title={<Title />} hoverable style={{ maxWidth: 400 }}>
-                <Mutation mutation={LOGIN}>
+                <Mutation
+                  mutation={LOGIN}
+                  update={(cache, { data }) => {
+                    cache.writeQuery({
+                      query: GET_USER,
+                      data: { user: data.login }
+                    })
+                  }}
+                >
                   {(login, { loading, error }) => (
                     <Spin spinning={loading} size="large" tip="Authentication in progress">
                       {!loading && error && error.graphQLErrors.map(({ message }, i) => (

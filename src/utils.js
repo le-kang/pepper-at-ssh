@@ -56,11 +56,19 @@ const generatePasswordResetEmail = (name, token) => {
   `
 }
 
+const generateQRCodeEmail = (name, url) => {
+  return `<p style="margin-bottom: 1em">Dear ${name}, </p>
+  <p style="margin-bottom: 1em">Following is your QR code which will be used to login with Pepper at Sydney Startup Hub.</p>
+  <img width="250" height="250" alt="QR Code" src="${url}" />
+  `
+}
+
 export {
   hashPassword,
   generateToken,
   getUserId,
   validateMobileNumber,
   sleep,
-  generatePasswordResetEmail
+  generatePasswordResetEmail,
+  generateQRCodeEmail
 }

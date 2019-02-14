@@ -49,11 +49,17 @@ type Subscription {
 type User {
   id: ID!
   email: String!
-  password: String!
+  password: String
   name: String!
   companyName: String
   mobile: String
+  interactionSessionId: String
+  interactions: String
+  loginWith: String
+  disclaimer: Boolean!
+  freeCoffee: Boolean!
   verified: Boolean!
+  deactivated: Boolean!
 }
 
 type UserConnection {
@@ -64,11 +70,17 @@ type UserConnection {
 
 input UserCreateInput {
   email: String!
-  password: String!
+  password: String
   name: String!
   companyName: String
   mobile: String
+  interactionSessionId: String
+  interactions: String
+  loginWith: String
+  disclaimer: Boolean
+  freeCoffee: Boolean
   verified: Boolean
+  deactivated: Boolean
 }
 
 type UserEdge {
@@ -89,8 +101,20 @@ enum UserOrderByInput {
   companyName_DESC
   mobile_ASC
   mobile_DESC
+  interactionSessionId_ASC
+  interactionSessionId_DESC
+  interactions_ASC
+  interactions_DESC
+  loginWith_ASC
+  loginWith_DESC
+  disclaimer_ASC
+  disclaimer_DESC
+  freeCoffee_ASC
+  freeCoffee_DESC
   verified_ASC
   verified_DESC
+  deactivated_ASC
+  deactivated_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -100,11 +124,17 @@ enum UserOrderByInput {
 type UserPreviousValues {
   id: ID!
   email: String!
-  password: String!
+  password: String
   name: String!
   companyName: String
   mobile: String
+  interactionSessionId: String
+  interactions: String
+  loginWith: String
+  disclaimer: Boolean!
+  freeCoffee: Boolean!
   verified: Boolean!
+  deactivated: Boolean!
 }
 
 type UserSubscriptionPayload {
@@ -131,7 +161,13 @@ input UserUpdateInput {
   name: String
   companyName: String
   mobile: String
+  interactionSessionId: String
+  interactions: String
+  loginWith: String
+  disclaimer: Boolean
+  freeCoffee: Boolean
   verified: Boolean
+  deactivated: Boolean
 }
 
 input UserUpdateManyMutationInput {
@@ -140,7 +176,13 @@ input UserUpdateManyMutationInput {
   name: String
   companyName: String
   mobile: String
+  interactionSessionId: String
+  interactions: String
+  loginWith: String
+  disclaimer: Boolean
+  freeCoffee: Boolean
   verified: Boolean
+  deactivated: Boolean
 }
 
 input UserWhereInput {
@@ -228,8 +270,56 @@ input UserWhereInput {
   mobile_not_starts_with: String
   mobile_ends_with: String
   mobile_not_ends_with: String
+  interactionSessionId: String
+  interactionSessionId_not: String
+  interactionSessionId_in: [String!]
+  interactionSessionId_not_in: [String!]
+  interactionSessionId_lt: String
+  interactionSessionId_lte: String
+  interactionSessionId_gt: String
+  interactionSessionId_gte: String
+  interactionSessionId_contains: String
+  interactionSessionId_not_contains: String
+  interactionSessionId_starts_with: String
+  interactionSessionId_not_starts_with: String
+  interactionSessionId_ends_with: String
+  interactionSessionId_not_ends_with: String
+  interactions: String
+  interactions_not: String
+  interactions_in: [String!]
+  interactions_not_in: [String!]
+  interactions_lt: String
+  interactions_lte: String
+  interactions_gt: String
+  interactions_gte: String
+  interactions_contains: String
+  interactions_not_contains: String
+  interactions_starts_with: String
+  interactions_not_starts_with: String
+  interactions_ends_with: String
+  interactions_not_ends_with: String
+  loginWith: String
+  loginWith_not: String
+  loginWith_in: [String!]
+  loginWith_not_in: [String!]
+  loginWith_lt: String
+  loginWith_lte: String
+  loginWith_gt: String
+  loginWith_gte: String
+  loginWith_contains: String
+  loginWith_not_contains: String
+  loginWith_starts_with: String
+  loginWith_not_starts_with: String
+  loginWith_ends_with: String
+  loginWith_not_ends_with: String
+  disclaimer: Boolean
+  disclaimer_not: Boolean
+  freeCoffee: Boolean
+  freeCoffee_not: Boolean
   verified: Boolean
   verified_not: Boolean
+  deactivated: Boolean
+  deactivated_not: Boolean
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

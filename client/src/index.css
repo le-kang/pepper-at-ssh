@@ -54,9 +54,16 @@ button {
   border-radius: 1.5em !important;
   font-weight: bold !important;
   line-height: 2 !important;
-  height: 40px !important;
+  height: auto !important;
+  min-height: 40px !important;
   text-transform: uppercase !important;
   margin: 8px 0;
+  max-width: 100%;
+  white-space: normal;
+}
+
+button > span {
+  white-space: normal;
 }
 
 @media (max-width: 768px) {

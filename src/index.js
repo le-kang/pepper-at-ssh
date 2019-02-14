@@ -5,11 +5,8 @@ const options = {
   port: process.env.PORT || 4000,
   endpoint: '/graphql',
   subscriptions: '/subscriptions',
-  playground: '/playground'
-}
-
-if (process.env.NODE_ENV !== 'production') {
-  options.cors = {
+  playground: '/playground',
+  cors: {
     origin: true,
     credentials: true
   }

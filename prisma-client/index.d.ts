@@ -116,8 +116,20 @@ export type UserOrderByInput =
   | "companyName_DESC"
   | "mobile_ASC"
   | "mobile_DESC"
+  | "interactionSessionId_ASC"
+  | "interactionSessionId_DESC"
+  | "interactions_ASC"
+  | "interactions_DESC"
+  | "loginWith_ASC"
+  | "loginWith_DESC"
+  | "disclaimer_ASC"
+  | "disclaimer_DESC"
+  | "freeCoffee_ASC"
+  | "freeCoffee_DESC"
   | "verified_ASC"
   | "verified_DESC"
+  | "deactivated_ASC"
+  | "deactivated_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -127,11 +139,17 @@ export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
 export interface UserCreateInput {
   email: String;
-  password: String;
+  password?: String;
   name: String;
   companyName?: String;
   mobile?: String;
+  interactionSessionId?: String;
+  interactions?: String;
+  loginWith?: String;
+  disclaimer?: Boolean;
+  freeCoffee?: Boolean;
   verified?: Boolean;
+  deactivated?: Boolean;
 }
 
 export interface UserUpdateInput {
@@ -140,7 +158,13 @@ export interface UserUpdateInput {
   name?: String;
   companyName?: String;
   mobile?: String;
+  interactionSessionId?: String;
+  interactions?: String;
+  loginWith?: String;
+  disclaimer?: Boolean;
+  freeCoffee?: Boolean;
   verified?: Boolean;
+  deactivated?: Boolean;
 }
 
 export interface UserWhereInput {
@@ -228,8 +252,56 @@ export interface UserWhereInput {
   mobile_not_starts_with?: String;
   mobile_ends_with?: String;
   mobile_not_ends_with?: String;
+  interactionSessionId?: String;
+  interactionSessionId_not?: String;
+  interactionSessionId_in?: String[] | String;
+  interactionSessionId_not_in?: String[] | String;
+  interactionSessionId_lt?: String;
+  interactionSessionId_lte?: String;
+  interactionSessionId_gt?: String;
+  interactionSessionId_gte?: String;
+  interactionSessionId_contains?: String;
+  interactionSessionId_not_contains?: String;
+  interactionSessionId_starts_with?: String;
+  interactionSessionId_not_starts_with?: String;
+  interactionSessionId_ends_with?: String;
+  interactionSessionId_not_ends_with?: String;
+  interactions?: String;
+  interactions_not?: String;
+  interactions_in?: String[] | String;
+  interactions_not_in?: String[] | String;
+  interactions_lt?: String;
+  interactions_lte?: String;
+  interactions_gt?: String;
+  interactions_gte?: String;
+  interactions_contains?: String;
+  interactions_not_contains?: String;
+  interactions_starts_with?: String;
+  interactions_not_starts_with?: String;
+  interactions_ends_with?: String;
+  interactions_not_ends_with?: String;
+  loginWith?: String;
+  loginWith_not?: String;
+  loginWith_in?: String[] | String;
+  loginWith_not_in?: String[] | String;
+  loginWith_lt?: String;
+  loginWith_lte?: String;
+  loginWith_gt?: String;
+  loginWith_gte?: String;
+  loginWith_contains?: String;
+  loginWith_not_contains?: String;
+  loginWith_starts_with?: String;
+  loginWith_not_starts_with?: String;
+  loginWith_ends_with?: String;
+  loginWith_not_ends_with?: String;
+  disclaimer?: Boolean;
+  disclaimer_not?: Boolean;
+  freeCoffee?: Boolean;
+  freeCoffee_not?: Boolean;
   verified?: Boolean;
   verified_not?: Boolean;
+  deactivated?: Boolean;
+  deactivated_not?: Boolean;
   AND?: UserWhereInput[] | UserWhereInput;
   OR?: UserWhereInput[] | UserWhereInput;
   NOT?: UserWhereInput[] | UserWhereInput;
@@ -241,7 +313,13 @@ export interface UserUpdateManyMutationInput {
   name?: String;
   companyName?: String;
   mobile?: String;
+  interactionSessionId?: String;
+  interactions?: String;
+  loginWith?: String;
+  disclaimer?: Boolean;
+  freeCoffee?: Boolean;
   verified?: Boolean;
+  deactivated?: Boolean;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -299,11 +377,17 @@ export interface BatchPayloadSubscription
 export interface UserPreviousValues {
   id: ID_Output;
   email: String;
-  password: String;
+  password?: String;
   name: String;
   companyName?: String;
   mobile?: String;
+  interactionSessionId?: String;
+  interactions?: String;
+  loginWith?: String;
+  disclaimer: Boolean;
+  freeCoffee: Boolean;
   verified: Boolean;
+  deactivated: Boolean;
 }
 
 export interface UserPreviousValuesPromise
@@ -315,7 +399,13 @@ export interface UserPreviousValuesPromise
   name: () => Promise<String>;
   companyName: () => Promise<String>;
   mobile: () => Promise<String>;
+  interactionSessionId: () => Promise<String>;
+  interactions: () => Promise<String>;
+  loginWith: () => Promise<String>;
+  disclaimer: () => Promise<Boolean>;
+  freeCoffee: () => Promise<Boolean>;
   verified: () => Promise<Boolean>;
+  deactivated: () => Promise<Boolean>;
 }
 
 export interface UserPreviousValuesSubscription
@@ -327,7 +417,13 @@ export interface UserPreviousValuesSubscription
   name: () => Promise<AsyncIterator<String>>;
   companyName: () => Promise<AsyncIterator<String>>;
   mobile: () => Promise<AsyncIterator<String>>;
+  interactionSessionId: () => Promise<AsyncIterator<String>>;
+  interactions: () => Promise<AsyncIterator<String>>;
+  loginWith: () => Promise<AsyncIterator<String>>;
+  disclaimer: () => Promise<AsyncIterator<Boolean>>;
+  freeCoffee: () => Promise<AsyncIterator<Boolean>>;
   verified: () => Promise<AsyncIterator<Boolean>>;
+  deactivated: () => Promise<AsyncIterator<Boolean>>;
 }
 
 export interface UserEdge {
@@ -375,11 +471,17 @@ export interface UserSubscriptionPayloadSubscription
 export interface User {
   id: ID_Output;
   email: String;
-  password: String;
+  password?: String;
   name: String;
   companyName?: String;
   mobile?: String;
+  interactionSessionId?: String;
+  interactions?: String;
+  loginWith?: String;
+  disclaimer: Boolean;
+  freeCoffee: Boolean;
   verified: Boolean;
+  deactivated: Boolean;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
@@ -389,7 +491,13 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   name: () => Promise<String>;
   companyName: () => Promise<String>;
   mobile: () => Promise<String>;
+  interactionSessionId: () => Promise<String>;
+  interactions: () => Promise<String>;
+  loginWith: () => Promise<String>;
+  disclaimer: () => Promise<Boolean>;
+  freeCoffee: () => Promise<Boolean>;
   verified: () => Promise<Boolean>;
+  deactivated: () => Promise<Boolean>;
 }
 
 export interface UserSubscription
@@ -401,7 +509,13 @@ export interface UserSubscription
   name: () => Promise<AsyncIterator<String>>;
   companyName: () => Promise<AsyncIterator<String>>;
   mobile: () => Promise<AsyncIterator<String>>;
+  interactionSessionId: () => Promise<AsyncIterator<String>>;
+  interactions: () => Promise<AsyncIterator<String>>;
+  loginWith: () => Promise<AsyncIterator<String>>;
+  disclaimer: () => Promise<AsyncIterator<Boolean>>;
+  freeCoffee: () => Promise<AsyncIterator<Boolean>>;
   verified: () => Promise<AsyncIterator<Boolean>>;
+  deactivated: () => Promise<AsyncIterator<Boolean>>;
 }
 
 export interface UserConnection {

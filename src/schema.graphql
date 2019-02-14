@@ -1,44 +1,48 @@
 type Query {
-    me: AuthPayload
-    profile: UserProfile!
+    user(id: String): User
 }
 
 type Mutation {
-    register(data: CreateUserInput!): Boolean!
-    login(email: String!, password: String!, rememberMe: Boolean!): Boolean!
-    updateProfile(data: UpdateUserInput!): UserProfile!
+    createTempUser(data: CreateTempUserInput): String!
+    register(data: CreateUserInput!): User!
+    login(email: String!, password: String!, rememberMe: Boolean!): User!
+    updateProfile(data: UpdateUserInput!): User!
+    sendQRCode(to: String!): Boolean!
     changePassword(currentPassword: String!, newPassword: String): Boolean!
     logout: Boolean!
     forgotPassword(email: String!): Boolean!
     resetPassword(token: String!, password: String!): Boolean!
+    deactivateAccount: Boolean!
 }
 
 type User {
     id: ID!
     email: String!
-    password: String!
-    name: String!
-    companyName: String
-    mobile: String
-    verified: Boolean!
-    updatedAt: String!
-    createdAt: String!
-}
-
-type AuthPayload {
-    id: ID!
-    name: String!
-}
-
-type UserProfile {
-    id: ID!
     name: String!
     mobile: String
     companyName: String
+    interactionSessionId: String
+    interactions: String
+    loginWith: String
+    disclaimer: Boolean!
+    freeCoffee: Boolean!
     verified: Boolean!
+    deactivated: Boolean!
+}
+
+input CreateTempUserInput {
+    email: String!
+    name: String!
+    mobile: String
+    interactionSessionId: String!
+    interactions: String!
+    loginWith: String!
+    disclaimer: Boolean!
+    freeCoffee: Boolean!
 }
 
 input CreateUserInput {
+    id: ID
     email: String!
     password: String!
     name: String!

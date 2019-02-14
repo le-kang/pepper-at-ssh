@@ -2,23 +2,49 @@ import gql from 'graphql-tag'
 
 const LOGIN = gql`
   mutation Login($email: String!, $password: String!, $rememberMe: Boolean!) {
-    login(email: $email, password: $password, rememberMe: $rememberMe)
+    login(email: $email, password: $password, rememberMe: $rememberMe) {
+      id
+      email
+      name
+      mobile
+      companyName
+      loginWith
+      verified
+    }
   }
 `
 
 const REGISTER = gql`
   mutation Register($data: CreateUserInput!) {
-    register(data: $data)
+    register(data: $data) {
+      id
+      email
+      name
+      mobile
+      companyName
+      loginWith
+      verified
+    }
   }
 `
 
 const UPDATE_PROFILE = gql`
   mutation UpdateProfile($data: UpdateUserInput!) {
     updateProfile(data: $data) {
+      id
+      email
       name
       mobile
       companyName
+      loginWith
+      verified
     }
+  }
+`
+
+const SEND_QR_CODE = gql`
+  mutation SendQRCode($to: String!) {
+    sendQRCode(to: $to)
   }
 `
 
@@ -46,12 +72,20 @@ const RESET_PASSWORD = gql`
   }
 `
 
+const DEACTIVATE_ACCOUNT = gql`
+  mutation deactivateAccount {
+    deactivateAccount
+  }
+`
+
 export {
   LOGIN,
   REGISTER,
   UPDATE_PROFILE,
+  SEND_QR_CODE,
   CHANGE_PASSWORD,
   LOGOUT,
   FORGOT_PASSWORD,
-  RESET_PASSWORD
+  RESET_PASSWORD,
+  DEACTIVATE_ACCOUNT
 }
