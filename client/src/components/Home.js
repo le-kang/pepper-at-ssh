@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import Banner from './Banner';
+import { Button, Modal } from 'antd';
 import { Query } from 'react-apollo'
 import { Animated } from 'react-animated-css'
 import { Element } from 'react-scroll'
 import VisibilitySensor from 'react-visibility-sensor'
 
+import Banner from './Banner';
 import { GET_USER } from '../queries'
 import styles from '../styles/Home.module.css'
 import pepperRobot from '../assets/images/pepper-robot.png'
@@ -115,19 +116,30 @@ class Home extends Component {
             <p>
               Concept 1 brings a state-of-the-art robotic companion system to the startup workspace to provide a modern take on:
             <strong>the concierge</strong>. Pepper is able to recognise, greet, notify and make arrangements for founders, with minimal setup.
-          </p>
+            </p>
             <ol>
               <li>Pepper stands in reception desk/or lift area and greets visitors to the Startup hub.</li>
               <li>Pepper assists with questions and directs visitors to their meetings.</li>
               <li>Founders can inform Pepper if they are expecting a client.</li>
               <li>Founders can be notified by Pepper when their client arrives and choose where to have them directed to.</li>
             </ol>
+            <Button
+              type="primary"
+              ghost
+              onClick={() => Modal.info({
+                width: '100%',
+                title: 'Concept 1 - Storyboard',
+                iconType: 'picture',
+                okText: 'Close',
+                content:
+                  <div style={{ textAlign: 'center' }}>
+                    <img alt="Concept 1 - Storyboard" src={storyboard1} style={{ width: '100%', maxWidth: '1000px', height: 'auto' }} />
+                  </div>
+              })}
+            >
+              See the storyboard
+            </Button>
           </div>
-      },
-      {
-        show: user && user.verified,
-        header: 'Concept 1 - Storyboard',
-        image: storyboard1
       },
       {
         show: user && user.verified,
@@ -138,19 +150,30 @@ class Home extends Component {
             <p>
               Concept 2 brings a state-of-the-art robotic companion system to the startup workspace to provide a modern take on: <strong>gaining product feedback.</strong>
               Pepper is able to recognise demographic requirements and (with permission) provide detailed analytics and usability feedback.
-          </p>
+            </p>
             <ol>
               <li>Pepper works for founders by conducting surveys.</li>
               <li>Founders upload their survey questions and required demographics to Pepper Hub’s website. </li>
               <li>Pepper surveys customers to Startup Hub, providing real time feedback to founders on their surveys. </li>
               <li>Interested customers can choose to meet with the founder to provide further feedback/ideas.</li>
             </ol>
+            <Button
+              type="primary"
+              ghost
+              onClick={() => Modal.info({
+                width: '100%',
+                title: 'Concept 2 - Storyboard',
+                iconType: 'picture',
+                okText: 'Close',
+                content:
+                  <div style={{ textAlign: 'center' }}>
+                    <img alt="Concept 2 - Storyboard" src={storyboard2} style={{ width: '100%', maxWidth: '1000px', height: 'auto' }} />
+                  </div>
+              })}
+            >
+              See the storyboard
+            </Button>
           </div>
-      },
-      {
-        show: user && user.verified,
-        header: 'Concept 2 - Storyboard',
-        image: storyboard2
       },
       {
         show: user && user.verified,
@@ -191,7 +214,7 @@ class Home extends Component {
 
   render() {
     return (
-      <Query query={GET_USER}>
+      <Query query={GET_USER} fetchPolicy="network-only">
         {({ loading, data = {} }) => {
           return [
             <Banner key="banner" user={data.user} loading={loading} />,

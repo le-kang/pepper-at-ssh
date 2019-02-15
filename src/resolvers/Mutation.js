@@ -9,12 +9,13 @@ import {
   generateToken,
   getUserId,
   validateMobileNumber,
+  generateRegistrationEmail,
   generatePasswordResetEmail,
   generateQRCodeEmail
 } from '../utils'
 
 const Mutation = {
-  async createTempUser(_, args, { prisma }) {
+  async createTempUser(_, args, { prisma, sgMail }) {
     if (!isEmailValid(args.data.email)) {
       throw new Error(`"${email}" is not a valid email address`)
     }
@@ -26,12 +27,19 @@ const Mutation = {
 
     validateMobileNumber(args.data.mobile)
 
-    const { id } = await prisma.createUser({
+    const user = await prisma.createUser({
       ...args.data,
       email
     })
 
-    return id
+    sgMail.send({
+      to: email,
+      from: 'Pepper <no-reply@pepper-hub.com>',
+      subject: 'Your QR code to login with Pepper robot',
+      html: generateRegistrationEmail(user.name, user.id)
+    })
+
+    return user.id
   },
 
   async register(_, args, { prisma, request, sgMail }) {
@@ -39,30 +47,28 @@ const Mutation = {
       throw new Error(`"${email}" is not a valid email address`)
     }
     const email = args.data.email.toLowerCase()
-    const emailExists = await prisma.$exists.user({ email })
-    if (emailExists) {
-      throw new Error(`"${email}" has been used`)
-    }
 
     const { name, mobile, companyName } = args.data
 
     validateMobileNumber(mobile)
 
     const password = await hashPassword(args.data.password)
-
     let user
     if (args.data.id) {
       user = await prisma.updateUser({
         where: { id: args.data.id },
         data: {
-          name,
-          email,
           password,
           mobile,
-          companyName
+          companyName,
+          verified: true
         }
       })
     } else {
+      const emailExists = await prisma.$exists.user({ email })
+      if (emailExists) {
+        throw new Error(`"${email}" has been used`)
+      }
       user = await prisma.createUser({
         name,
         email,
@@ -96,6 +102,9 @@ const Mutation = {
     }
     if (user.deactivated) {
       throw new Error('This account has been deactivated, please contact us if you would like to reactivate')
+    }
+    if (!user.password) {
+      throw new Error('Please complete your registration by following the registration link we sent to your email address')
     }
     const isMatch = await bcrypt.compare(args.password, user.password)
     if (!isMatch) {
@@ -172,7 +181,7 @@ const Mutation = {
 
   async forgotPassword(_, args, { prisma, sgMail }) {
     const user = await prisma.user({ email: args.email.toLowerCase() })
-    if (!user) {
+    if (!user || !user.password) {
       return true
     }
     sgMail.send({

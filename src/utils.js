@@ -46,6 +46,15 @@ const sleep = (s) => {
   return new Promise(resolve => setTimeout(resolve, s * 1000))
 }
 
+const generateRegistrationEmail = (name, userId) => {
+  return `<p style="margin-bottom: 1em">Dear ${name}, </p>
+  <p style="margin-bottom: 1em">Please complete your registration by following this link: </p>
+  <a href="${process.env.HOST_ADDRESS}/register/${userId}">${process.env.HOST_ADDRESS}/register/${userId}</a>
+  <p>Thank you!</p>
+  <p>Pepper Hub</p>
+  `
+}
+
 const generatePasswordResetEmail = (name, token) => {
   return `<p style="margin-bottom: 1em">Dear ${name}, </p>
   <p style="margin-bottom: 1em">Someone has requested a link to reset the password for your account. 
@@ -53,6 +62,8 @@ const generatePasswordResetEmail = (name, token) => {
   No changes have been made to your account.</p>
   <p style="margin-bottom: 1em">To reset your password, follow this link (or paste into your browser) within the next 60 minutes: </p>
   <a href="${process.env.HOST_ADDRESS}/reset-password/${token}">${process.env.HOST_ADDRESS}/reset-password/${token}</a>
+  <p>Thank you!</p>
+  <p>Pepper Hub</p>
   `
 }
 
@@ -60,6 +71,8 @@ const generateQRCodeEmail = (name, url) => {
   return `<p style="margin-bottom: 1em">Dear ${name}, </p>
   <p style="margin-bottom: 1em">Following is your QR code which will be used to login with Pepper at Sydney Startup Hub.</p>
   <img width="250" height="250" alt="QR Code" src="${url}" />
+  <p>Thank you!</p>
+  <p>Pepper Hub</p>
   `
 }
 
@@ -69,6 +82,7 @@ export {
   getUserId,
   validateMobileNumber,
   sleep,
+  generateRegistrationEmail,
   generatePasswordResetEmail,
   generateQRCodeEmail
 }

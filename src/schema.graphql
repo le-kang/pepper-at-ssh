@@ -34,11 +34,11 @@ input CreateTempUserInput {
     email: String!
     name: String!
     mobile: String
-    interactionSessionId: String!
-    interactions: String!
-    loginWith: String!
-    disclaimer: Boolean!
-    freeCoffee: Boolean!
+    interactionSessionId: String
+    interactions: String
+    loginWith: String
+    disclaimer: Boolean
+    freeCoffee: Boolean
 }
 
 input CreateUserInput {

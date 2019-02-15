@@ -22,9 +22,9 @@ class Register extends Component {
     this.setState({ passwordVisiable: !this.state.passwordVisiable })
   }
 
-  showNotification = () => {
-    const { history, match } = this.props
-    const content = match.params.userId ?
+  showNotification = (user) => {
+    const { history } = this.props
+    const content = user.verified ?
       "Thanks for completing your registration. "
       + "Please follow the survey links to provide your feedback from interacting with Pepper." :
       "We have sent a QR code to your email address. "
@@ -41,13 +41,13 @@ class Register extends Component {
 
   handleRegitration = (e, register) => {
     e.preventDefault();
-    const { form } = this.props
+    const { form, match } = this.props
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        register({ variables: { data: values } })
-          .then(() => {
+        register({ variables: { data: { ...values, id: match.params.userId } } })
+          .then((res) => {
             form.resetFields()
-            this.showNotification()
+            this.showNotification(res.data.register)
           })
           .catch(() => { })
       }
@@ -56,6 +56,7 @@ class Register extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { userId } = this.props.match.params
 
     const formItemLayout = {
       labelCol: {
@@ -69,10 +70,10 @@ class Register extends Component {
     }
 
     return (
-      <Query query={GET_USER}>
+      <Query query={GET_USER} variables={{ id: userId }}>
         {({ loading, data = {} }) => {
           if (loading) return <Spin size="large" style={{ margin: 'auto' }} />
-          else if (data.user) return <Redirect to="/" />
+          else if (data.user && !userId) return <Redirect to="/" />
           else return (
             <Animated className="container" animationIn="zoomInUp">
               <Card className="page-card" title={<Title />} hoverable>
@@ -150,7 +151,7 @@ class Register extends Component {
                         {!loading && error && error.networkError &&
                           <Alert type="error" showIcon message="A network error has occurred, please try again later" closable />
                         }
-                        {!this.state.showConsentInfo && this.state.consented &&
+                        {!this.state.showConsentInfo && this.state.consented && !userId &&
                           <p>Great! Thanks for choosing to participate. Now you can register with Pepper!</p>}
                         <Form onSubmit={(e) => this.handleRegitration(e, register)}>
                           <Form.Item
@@ -158,13 +159,14 @@ class Register extends Component {
                             label="Email"
                           >
                             {getFieldDecorator('email', {
+                              initialValue: data.user.email,
                               rules: [{
                                 type: 'email', message: 'Invalid Email address!',
                               }, {
                                 required: true, message: 'Please input your Email!',
                               }],
                             })(
-                              <Input />
+                              <Input readOnly={!!data.user.email} />
                             )}
                           </Form.Item>
                           <Form.Item
@@ -195,6 +197,7 @@ class Register extends Component {
                             extra="This is what pepper will use to address you"
                           >
                             {getFieldDecorator('name', {
+                              initialValue: data.user.name,
                               rules: [{ required: true, message: 'Please input your name!' }],
                             })(
                               <Input />
@@ -206,6 +209,7 @@ class Register extends Component {
                             extra="This is how we will send you notifications if you use the Pepper checkin service"
                           >
                             {getFieldDecorator('mobile', {
+                              initialValue: data.user.mobile,
                               rules: [{ pattern: /^[0-9]{8}$/, message: 'Invalid Australian mobile number' }]
                             })(
                               <Input addonBefore="04" maxLength={8} />
