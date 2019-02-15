@@ -73,7 +73,7 @@ class Register extends Component {
       <Query query={GET_USER} variables={{ id: userId }}>
         {({ loading, data = {} }) => {
           if (loading) return <Spin size="large" style={{ margin: 'auto' }} />
-          else if (data.user && !userId) return <Redirect to="/" />
+          else if ((data.user && !userId) || (!data.user && userId)) return <Redirect to="/" />
           else return (
             <Animated className="container" animationIn="zoomInUp">
               <Card className="page-card" title={<Title />} hoverable>

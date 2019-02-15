@@ -11,13 +11,17 @@ import {
   validateMobileNumber,
   generateRegistrationEmail,
   generatePasswordResetEmail,
-  generateQRCodeEmail
+  generateQRCodeEmail,
+  generateRegistrationConfirmationEmail
 } from '../utils'
 
 const Mutation = {
   async createTempUser(_, args, { prisma, sgMail }) {
+    if (args.secret !== process.env.ROBOT_SECRET) {
+      throw new Error('Authentication failed')
+    }
     if (!isEmailValid(args.data.email)) {
-      throw new Error(`"${email}" is not a valid email address`)
+      throw new Error(`"${args.data.email}" is not a valid email address`)
     }
     const email = args.data.email.toLowerCase()
     const emailExists = await prisma.$exists.user({ email })
@@ -35,7 +39,7 @@ const Mutation = {
     sgMail.send({
       to: email,
       from: 'Pepper <no-reply@pepper-hub.com>',
-      subject: 'Your QR code to login with Pepper robot',
+      subject: 'Your Pepper Hub registration is one step away',
       html: generateRegistrationEmail(user.name, user.id)
     })
 
@@ -44,7 +48,7 @@ const Mutation = {
 
   async register(_, args, { prisma, request, sgMail }) {
     if (!isEmailValid(args.data.email)) {
-      throw new Error(`"${email}" is not a valid email address`)
+      throw new Error(`"${args.data.email}" is not a valid email address`)
     }
     const email = args.data.email.toLowerCase()
 
@@ -63,6 +67,13 @@ const Mutation = {
           companyName,
           verified: true
         }
+      })
+
+      sgMail.send({
+        to: user.email,
+        from: 'Pepper <no-reply@pepper-hub.com>',
+        subject: 'Your registration with Pepper Hub is completed',
+        html: generateRegistrationConfirmationEmail(user.name, user.email, user.loginWith, user.freeCoffee)
       })
     } else {
       const emailExists = await prisma.$exists.user({ email })
@@ -123,7 +134,7 @@ const Mutation = {
   },
 
   updateProfile(_, args, { prisma, request }) {
-    const id = getUserId(request)
+    const id = args.id || getUserId(request)
 
     validateMobileNumber(args.data.mobile)
 

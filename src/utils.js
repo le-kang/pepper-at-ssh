@@ -69,8 +69,22 @@ const generatePasswordResetEmail = (name, token) => {
 
 const generateQRCodeEmail = (name, url) => {
   return `<p style="margin-bottom: 1em">Dear ${name}, </p>
-  <p style="margin-bottom: 1em">Following is your QR code which will be used to login with Pepper at Sydney Startup Hub.</p>
+  <p style="margin-bottom: 1em">Here is your QR code which you can use to login with Pepper at Sydney Startup Hub.</p>
   <img width="250" height="250" alt="QR Code" src="${url}" />
+  <p>Thank you!</p>
+  <p>Pepper Hub</p>
+  `
+}
+
+const generateRegistrationConfirmationEmail = (name, email, loginWith, freeCoffee) => {
+  return `<p style="margin-bottom: 1em">Dear ${name}, </p>
+  <p style="margin-bottom: 1em">Thank you for registering with Pepper Hub.</p>
+  <p style="margin-bottom: 1em">Your Pepper Hub website login is <strong>${email}</strong>.</p>
+  <p style="margin-bottom: 1em">To access Pepper Hub services on Pepper, 
+  you are using <strong>${loginWith === 'face_id' ? 'face identification' : 'QR code'}</strong>.</p>
+  ${freeCoffee ? '<p style="margin-bottom: 1em">Please show this registration email to the researchers next to reception to receive your free coffee vouchers.'
+      + ' The researchers are available from 10am to 4pm from 20-Feb-2019 to 27-Feb-2019. '
+      + 'If you cannot find the researchers, please email to jonathan.vitale@uts.edu.au.</p>' : ''}
   <p>Thank you!</p>
   <p>Pepper Hub</p>
   `
@@ -84,5 +98,6 @@ export {
   sleep,
   generateRegistrationEmail,
   generatePasswordResetEmail,
-  generateQRCodeEmail
+  generateQRCodeEmail,
+  generateRegistrationConfirmationEmail
 }

@@ -181,12 +181,23 @@ class Home extends Component {
         header: 'Survey Link',
         image: pepperSurvey,
         description:
-          <p>
-            Which service do you think would benefit you most?
-            <br />
-            Follow this link to our anonymous survey and cast your vote.
-            You also get a chance to leave your feedback and/or ideas for social robot applications and rate your experience registering with Pepper.
-          </p>
+          <div>
+            <p>
+              Which service do you think would benefit you most?
+              <br />
+              Follow this link to our online survey and cast your vote.
+              You also get a chance to leave your feedback and/or ideas for social robot applications and rate your experience registering with Pepper.
+            </p>
+            {user && <a
+              href={`http://utsbusiness.az1.qualtrics.com/jfe/form/SV_7R6jsaoWDBvcWxL?id=${user.id}&v=${user.freeCoffee}&d=${user.disclaimer}&r=${user.loginWith}`}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <Button type="primary" ghost>
+                Pepper Hub Survey
+              </Button>
+            </a>}
+          </div>
       }
     ].reduce((acc, cur, i) => {
       if (!loading && cur.show) {

@@ -10,6 +10,8 @@ const LOGIN = gql`
       companyName
       loginWith
       verified
+      freeCoffee
+      disclaimer
     }
   }
 `
@@ -24,6 +26,8 @@ const REGISTER = gql`
       companyName
       loginWith
       verified
+      freeCoffee
+      disclaimer
     }
   }
 `
@@ -38,6 +42,8 @@ const UPDATE_PROFILE = gql`
       companyName
       loginWith
       verified
+      freeCoffee
+      disclaimer
     }
   }
 `

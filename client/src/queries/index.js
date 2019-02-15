@@ -10,6 +10,8 @@ const GET_USER = gql`
       companyName
       loginWith
       verified
+      freeCoffee
+      disclaimer
     }
   }
 `

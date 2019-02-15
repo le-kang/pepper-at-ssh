@@ -3,10 +3,10 @@ type Query {
 }
 
 type Mutation {
-    createTempUser(data: CreateTempUserInput): String!
+    createTempUser(data: CreateTempUserInput, secret: String!): String!
     register(data: CreateUserInput!): User!
     login(email: String!, password: String!, rememberMe: Boolean!): User!
-    updateProfile(data: UpdateUserInput!): User!
+    updateProfile(data: UpdateUserInput!, id: String): User!
     sendQRCode(to: String!): Boolean!
     changePassword(currentPassword: String!, newPassword: String): Boolean!
     logout: Boolean!
@@ -59,4 +59,10 @@ input UpdateUserInput {
     name: String
     companyName: String
     mobile: String
+    verified: Boolean
+    interactionSessionId: String
+    interactions: String
+    loginWith: String
+    disclaimer: Boolean
+    freeCoffee: Boolean
 }
