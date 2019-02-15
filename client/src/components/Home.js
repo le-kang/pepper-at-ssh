@@ -13,6 +13,7 @@ import pepperHub from '../assets/images/pepper-hub.png'
 import sydneyStartupHub from '../assets/images/sydney-startup-hub.png'
 import pepperAtUTS from '../assets/images/pepper-at-uts.png'
 import magiclabLogo from '../assets/images/magiclab-blue-logo.png'
+import pepperMagiclab from '../assets/images/pepper-magiclab.jpg'
 import concept1 from '../assets/images/pepper-concept-1.png'
 import storyboard1 from '../assets/images/storyboard-1.png'
 import concept2 from '../assets/images/pepper-concept-2.png'
@@ -97,7 +98,7 @@ class Home extends Component {
       {
         show: !user,
         header: 'What We Do',
-        image: magiclabLogo,
+        image: pepperMagiclab,
         description:
           <p>
             In order to realise the potential and future value social robots may present, we conduct studies to better understand the opportunities and challenges

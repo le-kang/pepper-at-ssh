@@ -215,7 +215,7 @@ class Profile extends Component {
     return (
       <Animated className="container" animationIn="zoomInUp">
         <Query query={GET_USER} fetchPolicy="network-only">
-          {({ loading, error, data }) => {
+          {({ loading, error, data = {} }) => {
             if (loading) return <Spin size="large" tip="Loading profile..." style={{ margin: 'auto' }} />
             if (!data.user) return <Redirect to="/" />
             if (error) {
