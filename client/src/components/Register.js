@@ -159,14 +159,14 @@ class Register extends Component {
                             label="Email"
                           >
                             {getFieldDecorator('email', {
-                              initialValue: data.user.email,
+                              initialValue: data.user ? data.user.email : undefined,
                               rules: [{
                                 type: 'email', message: 'Invalid Email address!',
                               }, {
                                 required: true, message: 'Please input your Email!',
                               }],
                             })(
-                              <Input readOnly={!!data.user.email} />
+                              <Input readOnly={data.user && data.user.email} />
                             )}
                           </Form.Item>
                           <Form.Item
@@ -197,7 +197,7 @@ class Register extends Component {
                             extra="This is what pepper will use to address you"
                           >
                             {getFieldDecorator('name', {
-                              initialValue: data.user.name,
+                              initialValue: data.user ? data.user.name : undefined,
                               rules: [{ required: true, message: 'Please input your name!' }],
                             })(
                               <Input />
@@ -209,7 +209,7 @@ class Register extends Component {
                             extra="This is how we will send you notifications if you use the Pepper checkin service"
                           >
                             {getFieldDecorator('mobile', {
-                              initialValue: data.user.mobile,
+                              initialValue: data.user ? data.user.mobile: undefined,
                               rules: [{ pattern: /^[0-9]{8}$/, message: 'Invalid Australian mobile number' }]
                             })(
                               <Input addonBefore="04" maxLength={8} />
