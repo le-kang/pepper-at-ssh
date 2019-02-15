@@ -144,7 +144,7 @@ const Mutation = {
     })
   },
 
-  async sendQRCode(_, args, { prisma, request, sgMail }) {
+  async sendQRCode(_, args, { prisma, request, sgMail, twilioClient }) {
     const id = getUserId(request)
     const user = await prisma.user({ id })
     return QRCode.toDataURL(user.id)
@@ -161,6 +161,12 @@ const Mutation = {
           if (!user.mobile) {
             throw new Error('Please provide your mobile number by updating your profile')
           }
+          twilioClient.messages
+            .create({
+              from: 'Pepper Hub',
+              body: 'Click following link to get your QR Code: https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + user.id,
+              to: '+614' + user.mobile
+            })
           return true
         }
       })

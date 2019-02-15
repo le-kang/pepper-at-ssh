@@ -6,12 +6,15 @@ import MemoryStore from 'memorystore'
 import ms from 'ms'
 import passport from 'passport'
 import sgMail from '@sendgrid/mail'
+import twilio from 'twilio'
 import path from 'path'
 
 import resolvers from './resolvers'
 import { prisma } from '../prisma-client'
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+
+const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN)
 
 const server = new GraphQLServer({
   typeDefs: './src/schema.graphql',
@@ -20,7 +23,8 @@ const server = new GraphQLServer({
     return {
       ...request,
       prisma,
-      sgMail
+      sgMail,
+      twilioClient
     }
   }
 })
