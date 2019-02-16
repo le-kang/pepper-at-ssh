@@ -5,14 +5,18 @@ import cookieParser from 'cookie-parser'
 import MemoryStore from 'memorystore'
 import ms from 'ms'
 import passport from 'passport'
-import sgMail from '@sendgrid/mail'
+import Mailgun from 'mailgun-js'
 import twilio from 'twilio'
 import path from 'path'
 
 import resolvers from './resolvers'
 import { prisma } from '../prisma-client'
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+const mailgun = Mailgun({
+  apiKey: process.env.MAILGUN_API_KEY,
+  domain: process.env.MAILGUN_DOMAIN
+})
+
 
 const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN)
 
@@ -23,7 +27,7 @@ const server = new GraphQLServer({
     return {
       ...request,
       prisma,
-      sgMail,
+      mailgun,
       twilioClient
     }
   }

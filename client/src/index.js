@@ -12,7 +12,7 @@ import 'animate.css/animate.min.css'
 import './index.css'
 
 const httpLink = createHttpLink({
-  uri: process.env.NODE_ENV === 'production' ? '/graphql' : 'http://localhost:4000/graphql',
+  uri: process.env.NODE_ENV === 'production' ? '/graphql' : `http://${window.location.hostname}:4000/graphql`,
   credentials: process.env.NODE_ENV === 'production' ? 'same-origin' : 'include'
 })
 

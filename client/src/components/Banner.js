@@ -94,9 +94,9 @@ class Banner extends Component {
               {!user.verified &&
                 <Alert
                   message={<p style={{ fontSize: '1.5em' }}>Registration Notice</p>}
-                  style={{ maxWidth: 600, maxHeight: '100%', overflowY: 'auto', margin: 'auto' }}
+                  style={{ maxWidth: 600, margin: 'auto' }}
                   description={
-                    <p style={{ marginTop: 16, fontSize: '1.2em'}}>
+                    <p style={{ marginTop: 16, fontSize: '1.2em' }}>
                       Please complete your registration by showing your QR code to Pepper at Sydney Startup Hub.
                       <br />
                       You can find your QR code from <Link to="/profile">Profile</Link>.
@@ -109,14 +109,14 @@ class Banner extends Component {
               {user.verified &&
                 <Alert
                   message={<p style={{ fontSize: '1.5em' }}>Survey Invitation</p>}
-                  style={{ maxWidth: 600, maxHeight: '100%', overflowY: 'auto', margin: 'auto' }}
+                  style={{ maxWidth: 600, margin: 'auto' }}
                   description={
-                    <p style={{ marginTop: 16, fontSize: '1.2em'}}>
-                      Now that you’ve registered and interacted with Pepper we’d like to ask you some questions. 
+                    <p style={{ marginTop: 16, fontSize: '1.2em' }}>
+                      Now that you’ve registered and interacted with Pepper we’d like to ask you some questions.
                       <br />
-                      We want to know how a social robot application could assist founders at Sydney Startup Hub. 
-                      We’ve come up with two service concepts that we can build for Pepper, 
-                      based on observations and interviews with people here at Startup Hub, and we want your feedback! 
+                      We want to know how a social robot application could assist founders at Sydney Startup Hub.
+                      We’ve come up with two service concepts that we can build for Pepper,
+                      based on observations and interviews with people here at Startup Hub, and we want your feedback!
                       <br />
                       Read below to find out more and vote which service would benefit you most.
                     </p>

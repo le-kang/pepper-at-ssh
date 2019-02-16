@@ -150,11 +150,11 @@ class Home extends Component {
           <div>
             <p>
               Concept 2 brings a state-of-the-art robotic companion system to the startup workspace to provide a modern take on: <strong>gaining product feedback.</strong>
-              Pepper is able to recognise demographic requirements and (with permission) provide detailed analytics and usability feedback.
+              Pepper is able to recognise demographic segment requirements and (with permission) provide detailed analytics and usability feedback.
             </p>
             <ol>
               <li>Pepper works for founders by conducting surveys.</li>
-              <li>Founders upload their survey questions and required demographics to Pepper Hub’s website. </li>
+              <li>Founders upload their survey questions and required demographics segment requirements to Pepper Hub’s website. </li>
               <li>Pepper surveys customers to Startup Hub, providing real time feedback to founders on their surveys. </li>
               <li>Interested customers can choose to meet with the founder to provide further feedback/ideas.</li>
             </ol>

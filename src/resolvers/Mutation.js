@@ -2,7 +2,6 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import ms from 'ms'
 import { validate as isEmailValid } from 'email-validator'
-import QRCode from 'qrcode'
 
 import {
   hashPassword,
@@ -16,7 +15,7 @@ import {
 } from '../utils'
 
 const Mutation = {
-  async createTempUser(_, args, { prisma, sgMail }) {
+  async createTempUser(_, args, { prisma, mailgun }) {
     if (args.secret !== process.env.ROBOT_SECRET) {
       throw new Error('Authentication failed')
     }
@@ -36,9 +35,9 @@ const Mutation = {
       email
     })
 
-    sgMail.send({
+    mailgun.messages().send({
       to: email,
-      from: 'Pepper <no-reply@pepper-hub.com>',
+      from: 'Pepper <pepper@pepper-hub.com>',
       subject: 'Your Pepper Hub registration is one step away',
       html: generateRegistrationEmail(user.name, user.id)
     })
@@ -46,7 +45,7 @@ const Mutation = {
     return user.id
   },
 
-  async register(_, args, { prisma, request, sgMail }) {
+  async register(_, args, { prisma, request, mailgun }) {
     if (!isEmailValid(args.data.email)) {
       throw new Error(`"${args.data.email}" is not a valid email address`)
     }
@@ -69,9 +68,9 @@ const Mutation = {
         }
       })
 
-      sgMail.send({
+      mailgun.messages().send({
         to: user.email,
-        from: 'Pepper <no-reply@pepper-hub.com>',
+        from: 'Pepper <pepper@pepper-hub.com>',
         subject: 'Your registration with Pepper Hub is completed',
         html: generateRegistrationConfirmationEmail(user.name, user.email, user.loginWith, user.freeCoffee)
       })
@@ -87,15 +86,12 @@ const Mutation = {
         mobile,
         companyName
       })
-      QRCode.toDataURL(user.id)
-        .then(url => {
-          sgMail.send({
-            to: user.email,
-            from: 'Pepper <no-reply@pepper-hub.com>',
-            subject: 'Your QR code to login with Pepper robot',
-            html: generateQRCodeEmail(user.name, url)
-          })
-        })
+      mailgun.messages().send({
+        to: user.email,
+        from: 'Pepper <pepper@pepper-hub.com>',
+        subject: 'Your QR code to login with Pepper robot',
+        html: generateQRCodeEmail(user.name, 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + user.id)
+      })
     }
 
     return new Promise((resolve, reject) => {
@@ -144,35 +140,29 @@ const Mutation = {
     })
   },
 
-  async sendQRCode(_, args, { prisma, request, sgMail, twilioClient }) {
+  async sendQRCode(_, args, { prisma, request, mailgun, twilioClient }) {
     const id = getUserId(request)
     const user = await prisma.user({ id })
-    return QRCode.toDataURL(user.id)
-      .then(url => {
-        if (args.to === 'email') {
-          sgMail.send({
-            to: user.email,
-            from: 'Pepper <no-reply@pepper-hub.com>',
-            subject: 'Your QR code to login with Pepper robot',
-            html: generateQRCodeEmail(user.name, url)
-          })
-          return true
-        } else if (args.to === 'mobile') {
-          if (!user.mobile) {
-            throw new Error('Please provide your mobile number by updating your profile')
-          }
-          twilioClient.messages
-            .create({
-              from: 'Pepper Hub',
-              body: 'Click following link to get your QR Code: https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + user.id,
-              to: '+614' + user.mobile
-            })
-          return true
-        }
+    if (args.to === 'email') {
+      mailgun.messages().send({
+        to: user.email,
+        from: 'Pepper <pepper@pepper-hub.com>',
+        subject: 'Your QR code to login with Pepper robot',
+        html: generateQRCodeEmail(user.name, 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + user.id)
       })
-      .catch((err) => {
-        throw new Error(err.message)
-      })
+      return true
+    } else if (args.to === 'mobile') {
+      if (!user.mobile) {
+        throw new Error('Please provide your mobile number by updating your profile')
+      }
+      twilioClient.messages
+        .create({
+          from: 'Pepper Hub',
+          body: 'Click following link to get your QR Code: https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + user.id,
+          to: '+614' + user.mobile
+        })
+      return true
+    }
   },
 
   async changePassword(_, args, { prisma, request }) {
@@ -196,14 +186,14 @@ const Mutation = {
     return true
   },
 
-  async forgotPassword(_, args, { prisma, sgMail }) {
+  async forgotPassword(_, args, { prisma, mailgun }) {
     const user = await prisma.user({ email: args.email.toLowerCase() })
     if (!user || !user.password) {
       return true
     }
-    sgMail.send({
+    mailgun.messages().send({
       to: user.email,
-      from: 'Pepper <no-reply@pepper-hub.com>',
+      from: 'Pepper <pepper@pepper-hub.com>',
       subject: 'Resetting your Pepper Hub password',
       html: generatePasswordResetEmail(user.name, generateToken(user.id))
     })
