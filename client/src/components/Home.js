@@ -116,7 +116,7 @@ class Home extends Component {
           <div>
             <p>
               Concept 1 brings a state-of-the-art robotic companion system to the startup workspace to provide a modern take on:
-            <strong>the concierge</strong>. Pepper is able to recognise, greet, notify and make arrangements for founders, with minimal setup.
+              <strong>the concierge</strong>. Pepper is able to recognise, greet, notify and make arrangements for founders, with minimal setup.
             </p>
             <ol>
               <li>Pepper stands in reception desk/or lift area and greets visitors to the Startup hub.</li>

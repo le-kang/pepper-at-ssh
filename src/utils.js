@@ -52,6 +52,7 @@ const generateRegistrationEmail = (name, userId) => {
   <a href="${process.env.HOST_ADDRESS}/register/${userId}">${process.env.HOST_ADDRESS}/register/${userId}</a>
   <p>Thank you!</p>
   <p>Pepper Hub</p>
+  <p><a href="https://www.pepper-hub.com">www.pepper-hub.com</a></p>
   `
 }
 
@@ -64,6 +65,7 @@ const generatePasswordResetEmail = (name, token) => {
   <a href="${process.env.HOST_ADDRESS}/reset-password/${token}">${process.env.HOST_ADDRESS}/reset-password/${token}</a>
   <p>Thank you!</p>
   <p>Pepper Hub</p>
+  <p><a href="https://www.pepper-hub.com">www.pepper-hub.com</a></p>
   `
 }
 
@@ -73,6 +75,7 @@ const generateQRCodeEmail = (name, url) => {
   <img width="250" height="250" alt="QR Code" src="${url}" />
   <p>Thank you!</p>
   <p>Pepper Hub</p>
+  <p><a href="https://www.pepper-hub.com">www.pepper-hub.com</a></p>
   `
 }
 
@@ -83,6 +86,7 @@ const generateSurveyLinkEmail = (user) => {
   http://utsbusiness.az1.qualtrics.com/jfe/form/SV_7R6jsaoWDBvcWxL?id=${user.id}&v=${user.freeCoffee}&d=${user.disclaimer}&r=${user.loginWith}</a></p>
   <p>Thank you!</p>
   <p>Pepper Hub</p>
+  <p><a href="https://www.pepper-hub.com">www.pepper-hub.com</a></p>
   `
 }
 
@@ -99,6 +103,7 @@ const generateRegistrationConfirmationEmail = (user) => {
   ${loginWith === 'qr_code' ? `<img width="250" height="250" alt="QR Code" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${id}" />` : ''}
   <p>Thank you!</p>
   <p>Pepper Hub</p>
+  <p><a href="https://www.pepper-hub.com">www.pepper-hub.com</a></p>
   `
 }
 
