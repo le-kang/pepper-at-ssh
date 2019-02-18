@@ -62,7 +62,7 @@ const generatePasswordResetEmail = (name, token) => {
   If you did not request a password reset, you can ignore this email. 
   No changes have been made to your account.</p>
   <p style="margin-bottom: 1em">To reset your password, follow this link (or paste into your browser) within the next 60 minutes: </p>
-  <a href="${process.env.HOST_ADDRESS}/reset-password/${token}">${process.env.HOST_ADDRESS}/reset-password/${token}</a>
+  <p style="margin-bottom: 1em"><a href="${process.env.HOST_ADDRESS}/reset-password/${token}">${process.env.HOST_ADDRESS}/reset-password/${token}</a></p>
   <p>Thank you!</p>
   <p>Pepper Hub</p>
   <p><a href="https://www.pepper-hub.com">www.pepper-hub.com</a></p>
