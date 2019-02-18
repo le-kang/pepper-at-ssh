@@ -90,7 +90,7 @@ class Home extends Component {
         description:
           <p>
             The Innovation and Enterprise Research Laboratory (a.k.a. The Magic Lab) at University of Technology Sydney
-            is the Southern hemisphere’s leading Social Robotics Lab. Our lab includes academic researchers, PhD students and undergraduate students
+            is one of the leading international social robotics lab. Our lab includes academic researchers, PhD students and undergraduate students
             performing research and development around innovative and disruptive technology, such as Social Robotics.
             Our aim is to drive innovation for social good and work with industry to undertake research that benefits society.
           </p>
@@ -197,6 +197,7 @@ class Home extends Component {
                 Pepper Hub Survey
               </Button>
             </a>}
+            <p>After you have completed the survey please feel free to visit Pepper again!</p>
           </div>
       }
     ].reduce((acc, cur, i) => {

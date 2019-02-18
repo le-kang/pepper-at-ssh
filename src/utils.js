@@ -76,15 +76,27 @@ const generateQRCodeEmail = (name, url) => {
   `
 }
 
-const generateRegistrationConfirmationEmail = (name, email, loginWith, freeCoffee) => {
+const generateSurveyLinkEmail = (user) => {
+  return `<p style="margin-bottom: 1em">Dear ${user.name}, </p>
+  <p style="margin-bottom: 1em">Please follow this link to the Pepper Hub survey invitation. </p>
+  <p style="margin-bottom: 1em"><a href="http://utsbusiness.az1.qualtrics.com/jfe/form/SV_7R6jsaoWDBvcWxL?id=${user.id}&v=${user.freeCoffee}&d=${user.disclaimer}&r=${user.loginWith}">
+  http://utsbusiness.az1.qualtrics.com/jfe/form/SV_7R6jsaoWDBvcWxL?id=${user.id}&v=${user.freeCoffee}&d=${user.disclaimer}&r=${user.loginWith}</a></p>
+  <p>Thank you!</p>
+  <p>Pepper Hub</p>
+  `
+}
+
+const generateRegistrationConfirmationEmail = (user) => {
+  const { id, name, email, loginWith, freeCoffee } = user
   return `<p style="margin-bottom: 1em">Dear ${name}, </p>
   <p style="margin-bottom: 1em">Thank you for registering with Pepper Hub.</p>
   <p style="margin-bottom: 1em">Your Pepper Hub website login is <strong>${email}</strong>.</p>
   <p style="margin-bottom: 1em">To access Pepper Hub services on Pepper, 
   you are using <strong>${loginWith === 'face_id' ? 'face identification' : 'QR code'}</strong>.</p>
-  ${freeCoffee ? '<p style="margin-bottom: 1em">Please show this registration email to the researchers next to reception to receive your free coffee vouchers.'
-      + ' The researchers are available from 10am to 4pm from 20-Feb-2019 to 27-Feb-2019. '
-      + 'If you cannot find the researchers, please email to jonathan.vitale@uts.edu.au.</p>' : ''}
+  ${freeCoffee ? `<p style="margin-bottom: 1em">Please show this registration email to the researchers next to reception to receive your free coffee vouchers. 
+  The researchers are available from 10am to 4pm from 20-Feb-2019 to 27-Feb-2019. 
+  If you cannot find the researchers, please email to jonathan.vitale@uts.edu.au.</p>` : ''}
+  ${loginWith === 'qr_code' ? `<img width="250" height="250" alt="QR Code" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${id}" />` : ''}
   <p>Thank you!</p>
   <p>Pepper Hub</p>
   `
@@ -99,5 +111,6 @@ export {
   generateRegistrationEmail,
   generatePasswordResetEmail,
   generateQRCodeEmail,
+  generateSurveyLinkEmail,
   generateRegistrationConfirmationEmail
 }

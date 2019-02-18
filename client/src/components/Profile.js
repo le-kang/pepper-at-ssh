@@ -16,6 +16,7 @@ class Profile extends Component {
     this.state = {
       currentForm: 'details'
     }
+    this.sendQRToMobileRef = React.createRef()
   }
 
   handleMenuItemClick = (key, deactivateAccount) => {
@@ -53,18 +54,28 @@ class Profile extends Component {
       })
   }
 
-  handleSubmit = (e, currentForm, mutation) => {
+  handleSubmit = (e, currentForm, mutation, previousUserData) => {
     e.preventDefault();
     const { form } = this.props
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const variables = currentForm === 'details' ? { data: values } : values
         mutation({ variables })
-          .then(() => {
+          .then((data) => {
+            if (data.data.updateProfile.mobile && data.data.updateProfile.mobile !== previousUserData.mobile) {
+              Modal.confirm({
+                title: 'Your mobile number has been updated',
+                content: 'Would you like to send your QR code to your new mobile number?',
+                okText: 'Yes',
+                cancelText: 'No',
+                onOk: () => this.sendQRToMobileRef.current.click()
+              })
+            }
             notification.success({ message: 'Operation succeeded' })
             currentForm === 'security' && form.resetFields()
           })
           .catch((error) => {
+            console.log(error)
             notification.error({
               message: 'Update request failed',
               description: error.graphQLErrors.length ? error.graphQLErrors[0].message : 'A network error has occurred, please try again later',
@@ -277,7 +288,7 @@ class Profile extends Component {
                     }}
                   >
                     {(mutation, { loading }) => (
-                      <Form className={styles.form} onSubmit={(e) => this.handleSubmit(e, this.state.currentForm, mutation)}>
+                      <Form className={styles.form} onSubmit={(e) => this.handleSubmit(e, this.state.currentForm, mutation, data.user)}>
                         {this.renderForm(this.state.currentForm, data.user, loading)}
                       </Form>
                     )}
@@ -292,6 +303,7 @@ class Profile extends Component {
                             cover={<QRCode value={data.user.id} size={198} />}
                             actions={[
                               <span
+                                ref={this.sendQRToMobileRef}
                                 onClick={() => this.sendQRCode('mobile', sendQRCode)}
                                 style={{ display: 'inline-block', lineHeight: '22px' }}
                               >

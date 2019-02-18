@@ -11,6 +11,7 @@ import {
   generateRegistrationEmail,
   generatePasswordResetEmail,
   generateQRCodeEmail,
+  generateSurveyLinkEmail,
   generateRegistrationConfirmationEmail
 } from '../utils'
 
@@ -72,7 +73,7 @@ const Mutation = {
         to: user.email,
         from: 'Pepper <pepper@pepper-hub.com>',
         subject: 'Your registration with Pepper Hub is completed',
-        html: generateRegistrationConfirmationEmail(user.name, user.email, user.loginWith, user.freeCoffee)
+        html: generateRegistrationConfirmationEmail(user)
       })
     } else {
       const emailExists = await prisma.$exists.user({ email })
@@ -163,6 +164,18 @@ const Mutation = {
         })
       return true
     }
+  },
+
+  async sendSurveyLink(_, args, { prisma, mailgun }) {
+    const user = await prisma.user({ id: args.id })
+    if (!user) return false
+    mailgun.messages().send({
+      to: user.email,
+      from: 'Pepper <pepper@pepper-hub.com>',
+      subject: 'Your survey invitation for Pepper Hub',
+      html: generateSurveyLinkEmail(user)
+    })
+    return true
   },
 
   async changePassword(_, args, { prisma, request }) {

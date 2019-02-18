@@ -8,6 +8,7 @@ type Mutation {
     login(email: String!, password: String!, rememberMe: Boolean!): User!
     updateProfile(data: UpdateUserInput!, id: String): User!
     sendQRCode(to: String!): Boolean!
+    sendSurveyLink(id: String!): Boolean!
     changePassword(currentPassword: String!, newPassword: String): Boolean!
     logout: Boolean!
     forgotPassword(email: String!): Boolean!
