@@ -69,7 +69,7 @@ class App extends Component {
         <header key="header" className={styles.header}>
           <img alt="magiclab" src={magiclabLogo} height="120" />
           <Divider className={styles.divider} type="vertical" />
-          <img alt="soical robot research lab" src={socialRobotReasearchLogo} height="120" />
+          <img alt="soical robot research study" src={socialRobotReasearchLogo} height="120" />
           {/* <img alt="sydney start-up hub" src={sydneyStartupHubLogo} height="120" /> */}
         </header>,
         <main key="main" className={styles.main}>
