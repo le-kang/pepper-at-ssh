@@ -81,6 +81,10 @@ class Home extends Component {
             as well as technological feasibility. Once we know which service is preferred we can then build and run further studies with that service.
             Along the way we collect survey information to understand people’s preferences and experience when interacting with robots.
             Everyone taking part has a chance to provide feedback on the potential of the technology.
+            <br />
+            <a href="./participant-information-sydney-startup-hub.pdf" target="_blank">
+              <strong>Read my Participant Information Sheet here.</strong>
+            </a>
           </p>
       },
       {
