@@ -12,7 +12,8 @@ import {
   generatePasswordResetEmail,
   generateQRCodeEmail,
   generateSurveyLinkEmail,
-  generateRegistrationConfirmationEmail
+  generateRegistrationConfirmationEmail,
+  generateRegistrationNotificationEmail
 } from '../utils'
 
 const Mutation = {
@@ -41,6 +42,13 @@ const Mutation = {
       from: 'Pepper <pepper@pepper-hub.com>',
       subject: 'Your Pepper Hub registration is one step away',
       html: generateRegistrationEmail(user.name, user.id)
+    })
+
+    mailgun.messages().send({
+      to: ['meg.tonkin@gmail.com', 'jonathan.vitale@uts.edu.au'],
+      from: 'Pepper <pepper@pepper-hub.com>',
+      subject: 'New user registration',
+      html: generateRegistrationNotificationEmail(user, 'robot')
     })
 
     return user.id
@@ -92,6 +100,13 @@ const Mutation = {
         from: 'Pepper <pepper@pepper-hub.com>',
         subject: 'Your QR code to login with Pepper robot',
         html: generateQRCodeEmail(user.name, 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + user.id)
+      })
+
+      mailgun.messages().send({
+        to: ['meg.tonkin@gmail.com', 'jonathan.vitale@uts.edu.au'],
+        from: 'Pepper <pepper@pepper-hub.com>',
+        subject: 'New user registration',
+        html: generateRegistrationNotificationEmail(user, 'website')
       })
     }
 

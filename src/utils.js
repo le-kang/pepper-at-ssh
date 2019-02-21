@@ -49,7 +49,7 @@ const sleep = (s) => {
 const generateRegistrationEmail = (name, userId) => {
   return `<p style="margin-bottom: 1em">Dear ${name}, </p>
   <p style="margin-bottom: 1em">Please complete your registration by following this link: </p>
-  <a href="${process.env.HOST_ADDRESS}/register/${userId}">${process.env.HOST_ADDRESS}/register/${userId}</a>
+  <p style="margin-bottom: 1em"><a href="${process.env.HOST_ADDRESS}/register/${userId}">${process.env.HOST_ADDRESS}/register/${userId}</a></p>
   <p>Thank you!</p>
   <p>Pepper Hub</p>
   <p><a href="https://www.pepper-hub.com">www.pepper-hub.com</a></p>
@@ -107,6 +107,18 @@ const generateRegistrationConfirmationEmail = (user) => {
   `
 }
 
+const generateRegistrationNotificationEmail = (user, from) => {
+  const { id, name, email } = user
+  return `<p style="margin-bottom: 1em"><u>Information of new user registration: </u></p>
+  <ul>
+  <li><strong>ID: </strong>${id}/li>
+  <li><strong>Name: </strong>${name}</li>
+  <li><strong>Email: </strong>${email}</li>
+  <li><strong>Registered from: </strong>${from}</li>
+  </ul>
+  ${from === 'robot' ? `<p style="margin-bottom: 1em">User needs to complete registration by following <a href="${process.env.HOST_ADDRESS}/register/${id}">${process.env.HOST_ADDRESS}/register/${id}</a></p>` : ''}`
+}
+
 export {
   hashPassword,
   generateToken,
@@ -117,5 +129,6 @@ export {
   generatePasswordResetEmail,
   generateQRCodeEmail,
   generateSurveyLinkEmail,
-  generateRegistrationConfirmationEmail
+  generateRegistrationConfirmationEmail,
+  generateRegistrationNotificationEmail
 }
