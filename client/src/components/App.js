@@ -11,8 +11,7 @@ import ForgotPassword from './ForgotPassword'
 import ResetPassword from './ResetPassword'
 import styles from '../styles/App.module.css'
 import magiclabLogo from '../assets/images/magiclab-white-logo.png'
-import socialRobotReasearchLogo from '../assets/images/social-robot-study-logo.png'
-// import sydneyStartupHubLogo from '../assets/images/sydney-startup-hub-logo.png'
+import sydneyStartupHubLogo from '../assets/images/sydney-startup-hub-logo.png'
 
 const navigations = {
   '/login': { prev: '/', name: 'Login' },
@@ -69,8 +68,7 @@ class App extends Component {
         <header key="header" className={styles.header}>
           <img alt="magiclab" src={magiclabLogo} height="120" />
           <Divider className={styles.divider} type="vertical" />
-          <img alt="soical robot research study" src={socialRobotReasearchLogo} height="120" />
-          {/* <img alt="sydney start-up hub" src={sydneyStartupHubLogo} height="120" /> */}
+          <img alt="sydney start-up hub" src={sydneyStartupHubLogo} height="120" />
         </header>,
         <main key="main" className={styles.main}>
           {this.renderBreadcrumb()}
