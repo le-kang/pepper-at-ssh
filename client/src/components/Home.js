@@ -83,7 +83,7 @@ class Home extends Component {
             Everyone taking part has a chance to provide feedback on the potential of the technology.
             <br />
             <a href="./participant-information-sydney-startup-hub.pdf" target="_blank">
-              <strong>Read my Participant Information Sheet here.</strong>
+              <strong>Read the Participant Information Sheet here.</strong>
             </a>
           </p>
       },
