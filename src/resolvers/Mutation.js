@@ -48,7 +48,7 @@ const Mutation = {
       to: ['meg.tonkin@gmail.com', 'jonathan.vitale@uts.edu.au'],
       from: 'Pepper <pepper@pepper-hub.com>',
       subject: 'New user registration',
-      html: generateRegistrationNotificationEmail(user, 'robot')
+      html: generateRegistrationNotificationEmail('robot')
     })
 
     return user.id
@@ -106,7 +106,7 @@ const Mutation = {
         to: ['meg.tonkin@gmail.com', 'jonathan.vitale@uts.edu.au'],
         from: 'Pepper <pepper@pepper-hub.com>',
         subject: 'New user registration',
-        html: generateRegistrationNotificationEmail(user, 'website')
+        html: generateRegistrationNotificationEmail('website')
       })
     }
 
