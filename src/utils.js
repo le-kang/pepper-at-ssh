@@ -98,8 +98,8 @@ const generateRegistrationConfirmationEmail = (user) => {
   <p style="margin-bottom: 1em">To access Pepper Hub services on Pepper, 
   you are using <strong>${loginWith === 'face_id' ? 'face identification' : 'QR code'}</strong>.</p>
   ${freeCoffee ? `<p style="margin-bottom: 1em">Please show this registration email to the researchers next to reception to receive your free coffee vouchers. 
-  The researchers are available from 10am to 4pm from 20-Feb-2019 to 27-Feb-2019. 
-  If you cannot find the researchers, please email to jonathan.vitale@uts.edu.au.</p>` : ''}
+  The researchers are available from 10am to 6pm from 20-Feb-2019 to 01-Mar-2019. 
+  If you cannot find the researchers, please email to jonathan.vitale@uts.edu.au and claim your coffee vouchers before 08-Mar-2019</p>` : ''}
   ${loginWith === 'qr_code' ? `<img width="250" height="250" alt="QR Code" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${id}" />` : ''}
   <p>Thank you!</p>
   <p>Pepper Hub</p>
