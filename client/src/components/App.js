@@ -75,7 +75,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/login" component={Login} />
-            <Route path="/register/:userId?" component={Register} />
+            <Route path="/register/:userId" component={Register} />
             <Route path="/profile" component={Profile} />
             <Route path="/forgot-password" component={ForgotPassword} />
             <Route path="/reset-password/:token" component={ResetPassword} />

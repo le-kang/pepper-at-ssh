@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import { Spin, Button, Alert, Icon, notification } from 'antd'
+import { Spin, Button, Alert, Icon, Modal, notification } from 'antd'
 import { Mutation } from 'react-apollo'
 import { scroller } from 'react-scroll'
 import { Animated } from 'react-animated-css'
@@ -17,6 +17,13 @@ class Banner extends Component {
     const hour = new Date().getHours();
     const period = hour < 12 ? 'morning' : hour < 18 ? 'afternoon' : 'evening'
     return <p className={styles.greeting}>{`Good ${period}, ${user.name}`}</p>
+  }
+
+  disableRegistration = () => {
+    Modal.info({
+      title: 'Registration closed',
+      content: 'It\'s no longer possible to register online as the study is now finished. '
+    })
   }
 
   render() {
@@ -42,7 +49,7 @@ class Banner extends Component {
               <Button
                 className={styles.button}
                 type="primary"
-                onClick={() => history.push('/register')}
+                onClick={() => this.disableRegistration()}
               >
                 Register
               </Button>
