@@ -81,7 +81,7 @@ class Login extends Component {
                           <Button type="primary" htmlType="submit" style={{ width: '100%' }} disabled={loading}>
                             Log in
                           </Button>
-                          Or <Link to='/register' disabled={loading}>register now!</Link>
+                          {/* Or <Link to='/register' disabled={loading}>register now!</Link> */}
                         </Form.Item>
                       </Form>
                     </Spin>
