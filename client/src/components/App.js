@@ -3,12 +3,13 @@ import { Route, Switch, Link, Redirect, withRouter } from 'react-router-dom'
 import { Icon, Breadcrumb, Divider } from 'antd'
 import { animateScroll as scroller } from 'react-scroll'
 
-import Home from './Home'
-import Login from './Login'
-import Register from './Register'
-import Profile from './Profile'
-import ForgotPassword from './ForgotPassword'
-import ResetPassword from './ResetPassword'
+import Farewell from './Farewell'
+// import Home from './Home'
+// import Login from './Login'
+// import Register from './Register'
+// import Profile from './Profile'
+// import ForgotPassword from './ForgotPassword'
+// import ResetPassword from './ResetPassword'
 import styles from '../styles/App.module.css'
 import magiclabLogo from '../assets/images/magiclab-white-logo.png'
 import sydneyStartupHubLogo from '../assets/images/sydney-startup-hub-logo.png'
@@ -73,12 +74,12 @@ class App extends Component {
         <main key="main" className={styles.main}>
           {this.renderBreadcrumb()}
           <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/login" component={Login} />
+            <Route exact path="/" component={Farewell} />
+            {/* <Route path="/login" component={Login} />
             <Route path="/register/:userId" component={Register} />
             <Route path="/profile" component={Profile} />
             <Route path="/forgot-password" component={ForgotPassword} />
-            <Route path="/reset-password/:token" component={ResetPassword} />
+            <Route path="/reset-password/:token" component={ResetPassword} /> */}
             <Route render={() => <Redirect to="/" />} />
           </Switch>
         </main>,
